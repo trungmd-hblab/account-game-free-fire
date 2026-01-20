@@ -1,0 +1,38 @@
+.dropdown {
+    position: fixed;
+    width: calc(12.5rem* var(--mantine-scale));
+    padding: 6px;
+    z-index: 10000;
+    top: 70px !important;
+    right: 24px !important;
+    border-radius: var(--popover-radius, var(--mantine-radius-default));
+    box-shadow: var(--popover-shadow, none);
+    border: 1px solid var(--popover-border-color);
+    --popover-shadow: var(--mantine-shadow-md);
+    transition-property: opacity;
+    transition-duration: 150ms;
+    transition-timing-function: ease;
+    background: white;
+}
+.label {
+    color: var(--mantine-color-dimmed);
+    font-weight: 500;
+    font-size: var(--mantine-font-size-xs);
+    padding: calc(var(--mantine-spacing-xs) / 2) var(--mantine-spacing-sm);
+    cursor: default;
+}
+
+.item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: var(--mantine-font-size-sm);
+    border-radius: var(--popover-radius, var(--mantine-radius-default));
+}
+
+.item:hover {
+    background-color: #f0f9ff;
+    color: #000000;
+  }

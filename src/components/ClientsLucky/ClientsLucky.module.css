@@ -1,0 +1,22 @@
+.scrolling_text_container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.scrolling_text {
+    display: inline-block;
+    padding-left: 100%;
+    animation: scroll-text 30s linear infinite;
+}
+
+@keyframes scroll-text {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}

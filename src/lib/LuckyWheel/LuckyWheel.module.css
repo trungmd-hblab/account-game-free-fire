@@ -1,0 +1,25 @@
+.lucky-wheel-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 400px; /* Adjust as needed */
+  height: 400px; /* Adjust as needed */
+}
+
+.wheel-plate {
+  position: relative;
+}
+
+.wheel-pointer {
+  position: absolute;
+  top: 32.5%;
+  left: 37%;
+  cursor: pointer;
+}
+
+.spin-button {
+  margin-top: 60px;
+  padding: 10px 20px;
+  cursor: pointer;
+}

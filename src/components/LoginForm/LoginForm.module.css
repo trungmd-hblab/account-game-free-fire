@@ -1,0 +1,23 @@
+.card {
+    background: #0000007a;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    color: #fff;
+    padding: 24px;
+    width:  95%;
+    max-width: 500px; 
+  }
+
+.form input::placeholder{
+    color: var(--mantine-color-placeholder);
+}
+.error{
+    color: #f43f5e ;
+    font-size: 12px;
+    margin: 10px 0px;
+}
+
+.form .m_8fb7ebe7 {
+    border: none;
+}

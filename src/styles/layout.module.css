@@ -1,0 +1,13 @@
+.layout_admin {
+  -ms-overflow-style: none;
+}
+.layout_admin::-webkit-scrollbar {
+  display: none;
+}
+
+.wrapper {
+  background-image: url('/images/wallpaper.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}

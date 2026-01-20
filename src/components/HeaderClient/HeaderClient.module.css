@@ -1,0 +1,142 @@
+.menu_item {
+  white-space: nowrap;
+  /* text-transform: uppercase; */
+}
+
+.icon:hover {
+  color: rgb(1, 1, 1);
+  stroke: 2;
+}
+
+.menu_item_active p {
+  color: black;
+}
+
+.headerBoxWrapper {
+  margin-bottom: 60px;
+}
+
+.headerBox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  box-shadow: 6px 1px 6px #a5a3a3;
+  background-color: #f7f7f7;
+  border-radius: 0;
+  z-index: 10000;
+}
+
+/* Desktop and Tablet Header */
+.headerCard {
+  padding: 0;
+  background-color: #f7f7f7;
+  height: 60px;
+  margin: 0 auto;
+  max-width: 1536px;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 60px;
+}
+
+.headerLogo {
+  font-weight: bold;
+  font-size: 24px;
+  /* margin-right: 20px; */
+}
+
+.headerLogo img {
+  height: 50px;
+}
+
+.headerMenuLink {
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #797979;
+}
+
+.headerMenuLink:hover {
+  color: black;
+}
+
+/* Mobile Header */
+.headerMobileCard {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  padding: 0;
+  background-color: #f7f7f7;
+  border-radius: 0;
+  box-shadow: 6px 1px 6px #a5a3a3;
+}
+
+.headerMobileContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  height: 60px;
+}
+
+.headerMobileLogo {
+  font-weight: bold;
+  font-size: 18px;
+  width: 300px;
+}
+
+.headerMobileLogo img {
+  width: 60%;
+  margin: 10px 0px;
+}
+
+.headerMobileMenu {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.drawerContent {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.drawerLink {
+  font-size: 18px;
+}
+
+.drawerLink:hover {
+  font-weight: 500;
+}
+
+/* Responsive Media Queries */
+
+/* Hide mobile header and show desktop/tablet header on large screens */
+@media (min-width: 768px) {
+  .headerMobileCard {
+    display: none;
+  }
+
+  .headerBox {
+    display: block;
+  }
+}
+
+/* Hide desktop/tablet header and show mobile header on small screens */
+@media (max-width: 767px) {
+  .headerBox {
+    display: none;
+  }
+
+  .headerMobileCard {
+    display: block;
+  }
+}

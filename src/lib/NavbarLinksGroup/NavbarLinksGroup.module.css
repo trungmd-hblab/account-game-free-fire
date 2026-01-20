@@ -1,0 +1,41 @@
+.link_active,
+.link:hover,
+.link_item:hover {
+  background-color: #f0f9ff;
+}
+
+.link {
+  margin-bottom: 5px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+ 
+}
+.group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  flex-wrap: nowrap;
+}
+
+.chevron {
+  transition: transform 200ms ease;
+}
+
+.link_item {
+  display: block;
+  font-size: 14px;
+  padding: 6px 12px;
+  margin-left: 2rem;
+  border-left: 1px solid  #424242;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}

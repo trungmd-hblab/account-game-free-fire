@@ -1,0 +1,9 @@
+.icon_rotate_left {
+    transition: transform 0.3s ease-in-out;
+    transform: rotate(90deg);
+}
+
+.icon_rotate_right {
+    transition: transform 0.3s ease-in-out;
+    transform: rotate(0deg);
+}
