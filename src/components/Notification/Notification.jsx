@@ -17,7 +17,7 @@ export default function Notification() {
             setOpened(false);
         }
     }, []);
-    const sanitizedFooterUrl = clientConfig?.footerUrl?.replace('https://api.hungakirarandomff.com/uploads/', '');
+    const sanitizedFooterUrl = clientConfig?.footerUrl?.replace('https://api.supitv.com/uploads/', '');
 
     const sanitizedGuideContent = sanitizedFooterUrl
         ? DOMPurify.sanitize(sanitizedFooterUrl)

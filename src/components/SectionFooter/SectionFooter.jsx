@@ -7,10 +7,10 @@ const SectionFooter = () => {
     <section className="screen bg-[#1c1b1b] mt-8" id="footer" >
       <Container className='flex flex-col lg:flex-row justify-between gap-10 text-white p-6 md:p-10 ' style={{ maxWidth: '1536px' }}>
         <Box className='flex-[2]'>
-          <Text size='sm' className='mb-2' fw={600} classNames='uppercase'>HUNGAKIRARANDOM.VN</Text>
+          <Text size='sm' className='mb-2' fw={600} classNames='uppercase'>Supitv.com</Text>
           <Box className='flex flex-col gap-2 '>
-            <Text className='text-sm'>Hungakirarandom.vn - Acc ngon giá rẻ, không đâu rẻ hơn</Text>
-            <Text className='text-sm'>Là điểm đến hoàn hảo cho bạn! Hungakirarandom chuyên cung cấp các tài khoản Free Fire với nhiều mức giá, đầy đủ kiểu có hể sỡ hữu ngay một tài khoản FreeFire.</Text>
+            <Text className='text-sm'>Supitv.com - Acc ngon giá rẻ, không đâu rẻ hơn</Text>
+            <Text className='text-sm'>Là điểm đến hoàn hảo cho bạn! supitv chuyên cung cấp các tài khoản Free Fire với nhiều mức giá, đầy đủ kiểu có hể sỡ hữu ngay một tài khoản FreeFire.</Text>
           </Box>
         </Box>
         <Box className='flex-[1]'>
@@ -32,10 +32,8 @@ const SectionFooter = () => {
           </Box>
         </Box>
         <Box className='flex-[1]'>
-          <Text size='sm' className='mb-2' fw={600} classNames='uppercase'>HUNGAKIRARADOM.VN</Text>
-          <Box className='flex flex-col gap-2 '>
-            <PluginFacebook />
-          </Box>
+          <Text size='sm' className='mb-2' fw={600} classNames='uppercase'>SUPITV.COM</Text>
+         
         </Box>
       </Container>
     </section>
