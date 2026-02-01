@@ -18,7 +18,8 @@ import { Controller, useForm } from "react-hook-form";
 
 function PhoneCard() {
     const [error, setError] = useState(null);
-    const { control, handleSubmit, watch, formState: { errors } } = useForm({
+    const [loading, setLoading] = useState(false);
+    const { control, handleSubmit, watch, formState: { errors }, reset, setValue } = useForm({
         defaultValues: {
             provider: '',
             cardNumber: '',
@@ -32,14 +33,20 @@ function PhoneCard() {
 
     const provider = watch('provider');
     const onSubmit = async (data) => {
+        setLoading(true);
+        setError(null);
         try {
             const denominationValue = parseInt(data.denomination.replace('đ', '').replace('.', ''));
             await submitPhoneCard(data.provider, data.cardNumber, data.serialNumber, denominationValue);
             setOpenedModal(true);
+            setLoading(false);
         } catch (error) {
             setOpenedModalFailed(true);
             setMessage(error?.response?.data?.message);
+            setLoading(false);
         }
+        setValue('cardNumber', '');
+        setValue('serialNumber', '');   
     };
 
     return (
@@ -79,6 +86,7 @@ function PhoneCard() {
                                         { value: 'GARENA', label: 'GARENA' },
                                     ]}
                                     placeholder="Chọn nhà cung cấp"
+                                    disabled={loading}
                                     error={errors.provider?.message}
                                 />
                             )}
@@ -92,6 +100,7 @@ function PhoneCard() {
                                 <TextInput
                                     {...field}
                                     label="Mã số thẻ"
+                                    disabled={loading}
                                     error={errors.cardNumber?.message}
                                 />
                             )}
@@ -105,6 +114,7 @@ function PhoneCard() {
                                 <TextInput
                                     {...field}
                                     label="Mã số seri"
+                                    disabled={loading}
                                     error={errors.serialNumber?.message}
                                 />
                             )}
@@ -125,7 +135,10 @@ function PhoneCard() {
                                                 <Card
                                                     className={`flex flex-col gap-1 p-3 text-center border cursor-pointer w-[31%] md:w-[22%] lg:w-[15%] ${field.value === value ? 'border-blue-500' : ''
                                                         }`}
-                                                    onClick={() => field.onChange(value)}
+                                                    onClick={() => {
+                                                        if (loading) return;
+                                                        field.onChange(value);
+                                                    }}
                                                 >
                                                     <Text className="font-medium text-sm">{value}</Text>
                                                     <Text className="font-medium text-xs text-[#848383]">Nhận 100%</Text>
@@ -138,7 +151,7 @@ function PhoneCard() {
                         )}
 
                         <Box className="mt-4 flex justify-end">
-                            <Button type="submit">Xác nhận nạp</Button>
+                            <Button type="submit" disabled={loading}>Xác nhận nạp</Button>
                         </Box>
                     </Box>
                 </Card>

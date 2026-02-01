@@ -2,6 +2,7 @@
 import { useGetDetailLuckyWheel, useGetDetailLuckyWheelWinner } from "@/api/client/luckywheel";
 import ModalConfirmLuckyWheel from "@/components/ModalConfirmLuckyWheel/ModalConfirmLuckyWheel";
 import SliderCardsWheel from "@/components/SliderCardsWheel/SliderCardsWheel";
+import FlipCard from "@/lib/FlipCard/FlipCard";
 import LuckyWheel from "@/lib/LuckyWheel/LuckyWheel";
 import { formatNumber } from "@/utils/formatNumber";
 import { Card, Text, Title } from "@mantine/core";
@@ -11,6 +12,9 @@ import { useEffect, useState } from 'react';
 function PageDetailLuckyWheel() {
   const { id } = useParams();
   const [account, setAccount] = useState(null);
+  const [startGame, setStartGame] = useState(false);
+  const [endGame, setEndGame] = useState(false);
+  const [indexPrize, setIndexPrize] = useState(null);
 
   const { data, isLoading, isError, error } = useGetDetailLuckyWheel(id);
   const { data: luckyWheelWinner } = useGetDetailLuckyWheelWinner();
@@ -25,11 +29,17 @@ function PageDetailLuckyWheel() {
         <div className="flex flex-col md:flex-row lg:flex-row gap-4 justify-between items-start">
           {account &&
             <div className="bg-cover bg-center rounded-lg p-4 flex justify-center items-center w-full md:w-7/10 lg:w-3/5" style={{ backgroundImage: 'url(/images/bg-default.png)' }}>
-              <LuckyWheel
+              {
+                account?.type == "pick"
+                ? 
+                <FlipCard account={account} setStartGame={setStartGame} startGame={startGame}  endGame={endGame} setEndGame={setEndGame} indexPrize={indexPrize}/>
+                : 
+                <LuckyWheel
                 wheelImage={account?.coverImageUrl}
                 pointerImage="/images/image.png"
                 account={account}
               />
+              }
             </div>
           }
           <div className="w-full md:w-3/10 lg:w-2/5">
@@ -65,7 +75,7 @@ function PageDetailLuckyWheel() {
                   </Text>
                 </div>
                 <div>
-                  <ModalConfirmLuckyWheel account={account} />
+                  <ModalConfirmLuckyWheel account={account}  type={account?.type} setStartGame={setStartGame} setEndGame={setEndGame} setIndexPrize={setIndexPrize}/>
                 </div>
               </>
             }

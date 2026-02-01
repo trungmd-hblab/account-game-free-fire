@@ -87,4 +87,16 @@ export const titlePage = [
     titlePage: "Lịch sử chơi vòng quay",
     link: "/admin/lucky_wheel/histories",
   },
+  {
+    titlePage: "Danh sách game lật thẻ đang hoạt động",
+    link: "/admin/flip_card/active",
+  },
+  {
+    titlePage: "Danh sách game lật thẻ không hoạt động",
+    link: "/admin/flip_card/inactive",
+  },
+  {
+    titlePage: "Lịch sử chơi lật thẻ",
+    link: "/admin/flip_card/histories",
+  },
 ];

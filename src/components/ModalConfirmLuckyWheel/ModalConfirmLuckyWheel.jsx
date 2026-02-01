@@ -1,4 +1,5 @@
 'use client';
+import { clickLuckyWheel } from '@/api/client/luckywheel';
 import ModalCheckLogin from '@/lib/ModalCheckLogin/ModalCheckLogin';
 import useStore from '@/stores/clientStore';
 import { formatNumber } from '@/utils/formatNumber';
@@ -7,11 +8,12 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-function ModalConfirmLuckyWheel({ account }) {
+function ModalConfirmLuckyWheel({ account, type , setStartGame, setEndGame, setIndexPrize}) {
     const [isBalanceSufficient, setIsBalanceSufficient] = useState(true);
     const [openLogin, setOpenLogin] = useState(false);
     const [openNotEnoughBalance, setOpenNotEnoughBalance] = useState(false);
     const [openFormBuy, setOpenFormBuy] = useState(false);
+    const [loading, setLoading] = useState(false)
     const { username, moneyBalance } = useStore((state) => ({
         username: state.username,
         moneyBalance: state.moneyBalance,
@@ -41,9 +43,28 @@ function ModalConfirmLuckyWheel({ account }) {
         }
     };
 
+    const handleConfirmPlayGame = async () => {
+        if(type == 'pick'){
+            setLoading(true)
+            setEndGame(false)
+            const res = await clickLuckyWheel(account._id);
+            if (res && res.result) {
+                setIndexPrize(res.result)
+            }
+            setStartGame(true)
+            
+        }
+            setLoading(false)
+            setOpenFormBuy(false)
+    }
+
     return (
         <>
-            <Button color="#1f2c64" className="mt-3 w-full" onClick={handleOpenForm}>Quay ngay</Button>
+            <Button color="#1f2c64" className="mt-3 w-full" onClick={handleOpenForm}>
+                {type == 'pick'
+                ? "Chơi ngay" : "Quay ngay"
+                }
+                </Button>
 
             <ModalCheckLogin opened={openLogin} setOpend={setOpenLogin} />
 
@@ -74,31 +95,49 @@ function ModalConfirmLuckyWheel({ account }) {
             <Modal
                 opened={openFormBuy}
                 onClose={() => setOpenFormBuy(false)}
-                title={<div className='font-semibold'>Thông tin lượt quay</div>}
+                title={<div className='font-semibold'>Thông tin lượt chơi</div>}
                 centered
             >
                 {username ? (
                     <Box >
-                        <Title order={4}>Phí sẽ được thu mỗi lần nhấn nút quay.</Title>
+                        <Title order={4}>
+                            {
+                                type == 'pick' ? 
+                                'Phí sẽ được thu mỗi lần nhấn nút bắt đầu chơi.' :
+                                'Phí sẽ được thu mỗi lần nhấn nút quay.'
+                            }
+                        </Title>
                         <div className='flex  border mt-4 mb-5'>
                             <div className='w-[50%] text-center'>
                                 <div className=' bg-[#b91c1c] px-4 py-2 text-white font-semibold' >Số dư hiện tại</div>
                                 <div className='py-2'>{formatNumber(moneyBalance)}đ</div>
                             </div>
                             <div className='w-[50%] text-center'>
-                                <div className=' bg-[#b91c1c] px-4 py-2  text-white font-semibold'>Giá quay 1 lần</div>
+                                <div className=' bg-[#b91c1c] px-4 py-2  text-white font-semibold'>Giá mỗi lần chơi</div>
                                 <div className='py-2'>{formatNumber(account?.fee?.value)}đ</div>
                             </div>
                         </div>
                         <Box mt="md">
-                            <Button
+                            {type == 'pick' ? (
+                                <Button
+                                color="green"
+                                style={{ marginLeft: '16px' }}
+                                onClick={handleConfirmPlayGame}
+                                loading={loading}
+                                >
+                               Bắt đầu chơi
+                                </Button>
+                            ) : (
+                                <Button
                                 variant="outline"
                                 color="green"
                                 style={{ marginLeft: '16px' }}
                                 onClick={() => setOpenFormBuy(false)}
-                            >
-                                Tôi đã hiểu
-                            </Button>
+                                 >
+                                    Tôi đã hiểu
+                                </Button>
+                            )}
+                           
                         </Box>
                     </Box>
                 ) : <></>}

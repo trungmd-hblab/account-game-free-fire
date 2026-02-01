@@ -273,6 +273,25 @@ export const page = {
     buttonAdd: "Tạo mới",
 
   },
+  flipCard: {
+    title: "Danh sách game lật thẻ",
+    searchPlaceholder: "Nhập từ tìm kiếm",
+    tableColumns: [
+      "Tên game",
+      "Mô tả",
+      "Hành động",
+    ],
+    tableHistoryColumns: [
+      "Tên khách hàng",
+      "Tên game",
+      "Giá (VND)",
+      "Loại trúng thưởng",
+      "Phần thưởng (Số KC/ Mã Acc game)",
+      "Thời gian chơi",
+    ],
+    buttonAdd: "Tạo mới",
+
+  },
   login: {
     title: "Đăng nhập",
     titleRegister: "Đăng ký",

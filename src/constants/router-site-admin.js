@@ -8,6 +8,7 @@ import {
   IconDeviceMobileFilled,
   IconDiamondFilled,
   IconLayoutDashboardFilled,
+  IconPlayCard,
   IconRosetteDiscountFilled,
   IconSettingsFilled,
   IconStarsFilled,
@@ -136,6 +137,29 @@ export const router = [
       {
         label: "Lịch sử chơi vòng quay",
         link: "/admin/lucky_wheel/histories",
+        role: ["admin"],
+      },
+    ],
+  },
+  {
+    label: "Game lật thẻ",
+    link: "/admin/flip_card",
+    icon: IconPlayCard,
+    role: ["admin"],
+    links: [
+      {
+        label: "Game lật thẻ đang hoạt động",
+        link: "/admin/flip_card/active",
+        role: ["admin"],
+      },
+      {
+        label: "Game lật thẻ không hoạt động",
+        link: "/admin/flip_card/inactive",
+        role: ["admin"],
+      },
+      {
+        label: "Lịch sử chơi lật thẻ",
+        link: "/admin/flip_card/histories",
         role: ["admin"],
       },
     ],

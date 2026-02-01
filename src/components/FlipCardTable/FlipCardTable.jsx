@@ -2,7 +2,8 @@ import TableHima from "@/lib/TableHima/TableHima";
 import { Alert, Button, Group, Modal, Table } from "@mantine/core";
 import { useState } from "react";
 import LuckyWheelForm from "../LuckyWheelForm/LuckyWheelForm";
-function LuckyWheelTable(props) {
+import FlipCardForm from "../FlipCardForm/FlipCardForm";
+function FlipCardTable(props) {
     const {
         columns,
         data,
@@ -100,7 +101,7 @@ function LuckyWheelTable(props) {
                 onPageChange={onPageChange}
                 onLimitChange={onLimitChange}
             />
-            <LuckyWheelForm
+            <FlipCardForm
                 opened={modalOpened}
                 onClose={handleCloseModal}
                 onSubmit={handleSaveEditForm}
@@ -110,12 +111,12 @@ function LuckyWheelTable(props) {
             <Modal
                 opened={confirmModalOpened}
                 onClose={() => setConfirmModalOpened(false)}
-                title="Xác nhận xoá vòng quay"
+                title="Xác nhận xoá game"
                 size={380}
                 centered
             >
                 <Alert title="Cảnh báo" color="red">
-                    Bạn có chắc chắn muốn xoá vòng quay này?
+                    Bạn có chắc chắn muốn xoá game này?
                 </Alert>
                 <Group position="right" mt="md">
                     <Button onClick={() => setConfirmModalOpened(false)}>Hủy</Button>
@@ -126,4 +127,4 @@ function LuckyWheelTable(props) {
     );
 }
 
-export default LuckyWheelTable;
+export default FlipCardTable;

@@ -41,6 +41,8 @@ export const ADMIN_ADD_ACCOUNTS = "/admin/game-account/bulk-insert";
 export const ADMIN_LUCKY_WHEEL = "/admin/lucky-wheel"
 export const ADMIN_LUCKY_WHEEL_HISTORY = "/admin/lucky-wheel/histories"
 
+export const ADMIN_FLIP_CARD = "/admin/flip_card"
+export const ADMIN_FLIP_CARD_HISTORY = "/admin/flip_card/histories"
 
 export const ADMIN_CONFIGS = "/admin/config"
 

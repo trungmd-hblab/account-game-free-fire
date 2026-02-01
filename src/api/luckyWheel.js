@@ -5,7 +5,7 @@ import { ADMIN_LUCKY_WHEEL, ADMIN_LUCKY_WHEEL_HISTORY, API_BASE_URL } from "./co
 
 export function useGetLuckyWheels(queryKey) {
   return useHimaQuery({
-    name: ["luckyWheels", queryKey],
+    name: ["useGetLuckyWheels", queryKey],
     path: API_BASE_URL + ADMIN_LUCKY_WHEEL,
     method: 'GET',
     params: queryKey,
@@ -40,7 +40,7 @@ export const useAddLuckyWheel = () => {
 
   return useMutation(addLuckyWheel, {
     onSuccess: () => {
-      queryClient.invalidateQueries("luckyWheels");
+      queryClient.invalidateQueries("useGetLuckyWheels");
     },
   });
 };
@@ -58,7 +58,7 @@ export const useUpdateLuckyWheel = () => {
 
   return useMutation(updateLuckyWheel, {
     onSuccess: () => {
-      queryClient.invalidateQueries("luckyWheels");
+      queryClient.invalidateQueries("useGetLuckyWheels");
     },
   });
 };
@@ -73,7 +73,7 @@ export const useRemoveLuckyWheel = () => {
 
   return useMutation(removeLuckyWheel, {
     onSuccess: () => {
-      queryClient.invalidateQueries("luckyWheels");
+      queryClient.invalidateQueries("useGetLuckyWheels");
     },
   });
 };

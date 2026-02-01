@@ -16,9 +16,9 @@ export default async function Home() {
         <SectionBanner />
         <SectionServices />
         <SectionFlashSales />
-        <SectionLuckyWheel title="🍀 Vòng quay may mắn" />
+        <SectionLuckyWheel title="🍀 Mini Game Săn Thưởng Lớn" />
         <SectionCate type={TYPE_CATE_RANDOM_GAME_ACCOUNT} title="😎 Ưu Đãi Độc Quyền" />
-        <SectionCate type={TYPE_CATE_OTHER_GAME_ACCOUNT} title="⭐ Tài khoản Roblox" />
+        <SectionCate type={TYPE_CATE_OTHER_GAME_ACCOUNT} title="⭐ Tài Khoản Roblox" />
         <SectionCate type={TYPE_CATE_FREE_FIRE_ACCOUNT} title="🎮 Tài Khoản Free Fire" />
         <Notification />
         <EarnDiamond />

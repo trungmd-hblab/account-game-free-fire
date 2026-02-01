@@ -190,7 +190,7 @@ const LuckyWheel = ({ wheelImage, pointerImage, account }) => {
       <Modal
         opened={openFormBuy}
         onClose={() => setOpenFormBuy(false)}
-        title={<div className='font-semibold'>Thông tin lượt quay</div>}
+        title={<div className='font-semibold'>Thông tin lượt chơi</div>}
         centered
       >
         {username ? (
@@ -202,7 +202,7 @@ const LuckyWheel = ({ wheelImage, pointerImage, account }) => {
                 <div className='py-2'>{formatNumber(moneyBalance)}đ</div>
               </div>
               <div className='w-[50%] text-center'>
-                <div className=' bg-[#b91c1c] px-4 py-2  text-white font-semibold'>Giá quay 1 lần</div>
+                <div className=' bg-[#b91c1c] px-4 py-2  text-white font-semibold'>Giá mỗi lần chơi</div>
                 <div className='py-2'>{formatNumber(account?.fee?.value)}đ</div>
               </div>
             </div>

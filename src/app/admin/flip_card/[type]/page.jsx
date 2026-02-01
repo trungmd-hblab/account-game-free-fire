@@ -1,37 +1,38 @@
 'use client'
 
 import { useAddLuckyWheel, useGetLuckyWheels, useRemoveLuckyWheel, useUpdateLuckyWheel } from "@/api/luckyWheel";
-import LuckyWheelForm from "@/components/LuckyWheelForm/LuckyWheelForm";
-import LuckyWheelTable from "@/components/LuckyWheelTable/LuckyWheelTable";
+import FlipCardForm from "@/components/FlipCardForm/FlipCardForm";
+import FlipCardTable from "@/components/FlipCardTable/FlipCardTable";
 import { page } from "@/constants/page";
 import SearchInput from "@/lib/SearchInput/SearchInput";
 import { Box, Button } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
-function LuckyWheelPage({ params }) {
+function FlipCardPage({ params }) {
     const { type } = params
     const [currentPage, setCurrentPage] = useState(1);
     const [limitView, setLimitView] = useState(10);
     const [modalOpened, setModalOpened] = useState(false);
-    const [luckyWheelQuery, setLuckyWheelQuery] = useState({
+    const [flipCardQuery, setFlipCardQuery] = useState({
         keyword: "",
         page: 1,
         limit: 10,
         status: type,
-        type:'circle',
+        type:'pick',
     })
-    const columns = page.lucky.tableColumns;
+    const columns = page.flipCard.tableColumns;
 
-    const { data: data } = useGetLuckyWheels(luckyWheelQuery);
+    const { data: data } = useGetLuckyWheels(flipCardQuery);
     const mutationAdd = useAddLuckyWheel();
     const mutationEdit = useUpdateLuckyWheel();
     const mutationRemove = useRemoveLuckyWheel();
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
-        setLuckyWheelQuery({
-            ...luckyWheelQuery,
+        setFlipCardQuery({
+            ...flipCardQuery,
             page: page,
         })
     };
@@ -39,16 +40,16 @@ function LuckyWheelPage({ params }) {
     const handleLimitChange = (value) => {
         setCurrentPage(1);
         setLimitView(value);
-        setLuckyWheelQuery({
-            ...luckyWheelQuery,
+        setFlipCardQuery({
+            ...flipCardQuery,
             page: 1,
             limit: value
         })
     };
 
     const handleSeach = (value) => {
-        setLuckyWheelQuery({
-            ...luckyWheelQuery,
+        setFlipCardQuery({
+            ...flipCardQuery,
             keyword: value,
             page: 1,
         })
@@ -56,7 +57,7 @@ function LuckyWheelPage({ params }) {
 
     const handleAddLuckyWheel = async (data) => {
         try {
-            await mutationAdd.mutateAsync({...data,  type:'circle'});
+            await mutationAdd.mutateAsync({...data, type:'pick'});
             setModalOpened(false);
         } catch (error) {
             console.error('Error adding transaction:', error);
@@ -74,7 +75,21 @@ function LuckyWheelPage({ params }) {
     const handleRemoveRow = async (id) => {
         try {
             await mutationRemove.mutateAsync(id);
+            toast.info("Xóa thành công.", {
+                position: "bottom-center",
+                autoClose: 1000,
+                closeOnClick: true,
+                pauseOnHover: true,
+                theme: "light",
+              });
         } catch (error) {
+            toast.error("Xóa không thành công.", {
+                position: "bottom-center",
+                autoClose: 1000,
+                closeOnClick: true,
+                pauseOnHover: true,
+                theme: "light",
+              });
             console.error('Error remove transaction:', error);
         }
     };
@@ -83,11 +98,11 @@ function LuckyWheelPage({ params }) {
             <Box style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '4px' }}>
                 <SearchInput
                     handleSearch={handleSeach}
-                    placeholder={page.lucky.searchPlaceholder}
+                    placeholder={page.flipCard.searchPlaceholder}
                 />
                 <Button onClick={() => setModalOpened(true)}><IconPlus size={18} />  {page.lucky.buttonAdd}</Button>
             </Box>
-            <LuckyWheelTable
+            <FlipCardTable
                 columns={columns}
                 data={data?.result?.items}
                 limitView={limitView}
@@ -98,14 +113,15 @@ function LuckyWheelPage({ params }) {
                 onSubmit={handleSaveEditForm}
                 onRemove={handleRemoveRow}
             />
-            <LuckyWheelForm
+            <FlipCardForm
                 mode="add"
                 opened={modalOpened}
                 onClose={() => setModalOpened(false)}
                 onSubmit={handleAddLuckyWheel}
             />
+            <ToastContainer />
         </div>
     );
 }
 
-export default LuckyWheelPage;
+export default FlipCardPage;
