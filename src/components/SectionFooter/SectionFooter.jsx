@@ -9,8 +9,8 @@ const SectionFooter = () => {
         <Box className='flex-[2]'>
           <Text size='sm' className='mb-2' fw={600} classNames='uppercase'>HUNGAKIRARANDOM.VN</Text>
           <Box className='flex flex-col gap-2 '>
-            <Text className='text-sm'>Hungakirarandom.vn - Acc ngon giá rẻ, không đâu rẻ hơn</Text>
-            <Text className='text-sm'>Là điểm đến hoàn hảo cho bạn! Hungakirarandom chuyên cung cấp các tài khoản Free Fire với nhiều mức giá, đầy đủ kiểu có hể sỡ hữu ngay một tài khoản FreeFire.</Text>
+            <Text className='text-sm'>Supitv.vn - Acc ngon giá rẻ, không đâu rẻ hơn</Text>
+            <Text className='text-sm'>Là điểm đến hoàn hảo cho bạn! Supitv chuyên cung cấp các tài khoản Free Fire với nhiều mức giá, đầy đủ kiểu có hể sỡ hữu ngay một tài khoản FreeFire.</Text>
           </Box>
         </Box>
         <Box className='flex-[1]'>

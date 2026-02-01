@@ -19,20 +19,20 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <title>
-          Hungakirarandom - Shop Chuyên Nick Free Fire - Random Kim Cương - Uy Tín - Chất Lượng
+          Supitv - Shop Chuyên Nick Free Fire - Random Kim Cương - Uy Tín - Chất Lượng
         </title>
         <meta
           name="description"
-          content="Hungakirarandom.vn - Shop Chuyên Nick Free Fire - Random Kim Cương - Uy Tín - Chất Lượng - Giá Rẻ Cho Học Sinh, Sinh Viên, Game Thủ Free Fire - Hỗ trợ khách hàng 24/24."
+          content="Supitv.vn - Shop Chuyên Nick Free Fire - Random Kim Cương - Uy Tín - Chất Lượng - Giá Rẻ Cho Học Sinh, Sinh Viên, Game Thủ Free Fire - Hỗ trợ khách hàng 24/24."
         />
         <meta name="robots" content="index, follow" />
         <meta
           property="og:title"
-          content="Hungakirarandom - Shop Chuyên Nick Free Fire - Random Kim Cương - Uy Tín - Chất Lượng"
+          content="Supitv - Shop Chuyên Nick Free Fire - Random Kim Cương - Uy Tín - Chất Lượng"
         />
         <meta
           property="og:description"
-          content="Hungakirarandom.vn - Shop Chuyên Nick Free Fire - Random Kim Cương - Uy Tín - Chất Lượng - Giá Rẻ Cho Học Sinh, Sinh Viên, Game Thủ Free Fire - Hỗ trợ khách hàng 24/24."
+          content="Supitv.vn - Shop Chuyên Nick Free Fire - Random Kim Cương - Uy Tín - Chất Lượng - Giá Rẻ Cho Học Sinh, Sinh Viên, Game Thủ Free Fire - Hỗ trợ khách hàng 24/24."
         />
         <meta property="og:type" content="article" />
         <meta

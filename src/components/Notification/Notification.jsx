@@ -18,7 +18,7 @@ export default function Notification() {
         }
     }, []);
 
-    const sanitizedFooterUrl = clientConfig?.footerUrl?.replace('https://api.hungakirarandom.vn/uploads/', '');
+    const sanitizedFooterUrl = clientConfig?.footerUrl?.replace('https://api.supitv.com/uploads/', '');
       
     const sanitizedGuideContent = sanitizedFooterUrl
         ? DOMPurify.sanitize(sanitizedFooterUrl)
