@@ -19,27 +19,27 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <title>
-          Supitv - Shop Chuyên Nick Free Fire - Random Kim Cương - Uy Tín - Chất Lượng
+          Hungakirashopff - Shop Chuyên Nick Free Fire - Random Kim Cương - Uy Tín - Chất Lượng
         </title>
         <meta
           name="description"
-          content="Supitv.com - Shop Chuyên Nick Free Fire - Random Kim Cương - Uy Tín - Chất Lượng - Giá Rẻ Cho Học Sinh, Sinh Viên, Game Thủ Free Fire - Hỗ trợ khách hàng 24/24."
+          content="Hungakirashopff.com - Shop Chuyên Nick Free Fire - Random Kim Cương - Uy Tín - Chất Lượng - Giá Rẻ Cho Học Sinh, Sinh Viên, Game Thủ Free Fire - Hỗ trợ khách hàng 24/24."
         />
         <meta name="robots" content="index, follow" />
         <meta
           property="og:title"
-          content="Supitv - Shop Chuyên Nick Free Fire - Random Kim Cương - Uy Tín - Chất Lượng"
+          content="Hungakirashopff - Shop Chuyên Nick Free Fire - Random Kim Cương - Uy Tín - Chất Lượng"
         />
         <meta
           property="og:description"
-          content="Supitv.com - Shop Chuyên Nick Free Fire - Random Kim Cương - Uy Tín - Chất Lượng - Giá Rẻ Cho Học Sinh, Sinh Viên, Game Thủ Free Fire - Hỗ trợ khách hàng 24/24."
+          content="Hungakirashopff.com - Shop Chuyên Nick Free Fire - Random Kim Cương - Uy Tín - Chất Lượng - Giá Rẻ Cho Học Sinh, Sinh Viên, Game Thủ Free Fire - Hỗ trợ khách hàng 24/24."
         />
         <meta property="og:type" content="article" />
         <meta
           property="og:image"
-          content="/uploads/1769965912_logosupitv.png"
+          content="/uploads/1769965912_logoHungakirashopff.png"
         />
-        <meta property="og:url" content="https://Supitv.com" />
+        <meta property="og:url" content="https://Hungakirashopff.com" />
         <meta name="keywords" content="" />
         <link
           rel="apple-touch-icon"
