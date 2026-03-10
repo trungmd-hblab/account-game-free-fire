@@ -18,9 +18,9 @@ function TransactionATM() {
     code: state.code,
   }));
 
-  const accountNumber = "9650218852627";
-  const accountHolder = "Mai Duc Trung";
-  const bank = "MB";
+  const accountNumber = "17249761";
+  const accountHolder = "Tran Hoang Linh";
+  const bank = "ACB";
   const transferContent = code;
   let vietQR = new VietQR({
     clientID: process.env.VIETQR_CLIENT_ID,
@@ -29,7 +29,7 @@ function TransactionATM() {
 
   let imgQRCode = vietQR.genQuickLink({
 
-    bank: '970422',
+    bank: '970416',
     accountName: accountHolder,
     accountNumber: accountNumber,
     amount: null,

@@ -1,6 +1,5 @@
 import EarnDiamond from '@/components/EarnDiamond/EarnDiamond';
 import Notification from '@/components/Notification/Notification';
-import PromoBanner from '@/components/PromoBanner/PromoBanner';
 import SectionBanner from '@/components/SectionBanner/SectionBanner';
 import SectionCate from '@/components/SectionCate/SectionCate';
 import SectionFlashSales from '@/components/SectionFlashSales/SectionFlashSales';
@@ -15,7 +14,6 @@ export default async function Home() {
 
       <main className='flex flex-col gap-4 md:gap-6 lg:gap-8'>
         <SectionBanner />
-        <PromoBanner />
         <SectionServices />
         <SectionFlashSales />
         <SectionLuckyWheel title="🍀 Mini Game Săn Thưởng Lớn" />
