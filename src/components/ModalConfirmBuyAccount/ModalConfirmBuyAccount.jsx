@@ -17,27 +17,35 @@ function ModalConfirmBuyAccount({ account }) {
     const [openedModal, setOpenedModal] = useState(false);
     const [openedModalFailed, setOpenedModalFailed] = useState(false);
     const [message, setMessage] = useState('');
+    const [paymentMethod, setPaymentMethod] = useState('atm');
     
     const originalPrice = account?.price || 0;
+    const priceAtm = account?.priceAtm ?? originalPrice;
+    const priceCard = account?.priceCard ?? originalPrice;
     const discount = account?.discountPercent || 0;
-    const discountedPrice = originalPrice - (originalPrice * discount / 100)
+    const discountedPriceAtm = priceAtm - (priceAtm * discount / 100)
+    const discountedPriceCard = priceCard - (priceCard * discount / 100)
+    const selectedPrice = paymentMethod === 'atm' ? discountedPriceAtm : discountedPriceCard;
 
     const router = useRouter();
-    const { username, moneyBalance } = useStore((state) => ({
+    const { username, atmBalance, cardBalance } = useStore((state) => ({
         username: state.username,
-        moneyBalance: state.moneyBalance,
+        atmBalance: state.atmBalance,
+        cardBalance: state.cardBalance,
     }));
+
+    const selectedBalance = paymentMethod === 'atm' ? atmBalance : cardBalance;
 
     useEffect(() => {
         const checkToken = Cookies.get('client_accessToken');
         if (checkToken && username) {
-            setIsBalanceSufficient(moneyBalance >= discountedPrice);
+            setIsBalanceSufficient(selectedBalance >= selectedPrice);
         }
-    }, [moneyBalance,username, account]);
+    }, [selectedBalance, selectedPrice, username]);
 
     const handlePurchase = async () => {
         try {
-            await buyAccountGame(account._id);
+            await buyAccountGame(account._id, paymentMethod);
             setOpenedModal(true);
             setOpenFormBuy(false)
         } catch (error){
@@ -74,14 +82,28 @@ function ModalConfirmBuyAccount({ account }) {
                     {username ? (
                         <Box >
                             <Title order={4}>Thông tin mua hàng</Title>
+                                                        <div className='flex gap-2 mt-4'>
+                                                                <Button
+                                                                    variant={paymentMethod === 'atm' ? 'filled' : 'outline'}
+                                                                    onClick={() => setPaymentMethod('atm')}
+                                                                >
+                                                                    Thanh toán ATM
+                                                                </Button>
+                                                                <Button
+                                                                    variant={paymentMethod === 'card' ? 'filled' : 'outline'}
+                                                                    onClick={() => setPaymentMethod('card')}
+                                                                >
+                                                                    Thanh toán thẻ cào
+                                                                </Button>
+                                                        </div>
                             <div className='flex  border mt-4 mb-5'>
                                 <div className='w-[50%] text-center'>
                                     <div className=' bg-[#b91c1c] px-4 py-2 text-white font-semibold' >Số dư hiện tại</div>
-                                    <div className='py-2'>{formatNumber(moneyBalance)}đ</div>
+                                                                        <div className='py-2'>{formatNumber(selectedBalance)}đ</div>
                                 </div>
                                 <div className='w-[50%] text-center'>
                                     <div className=' bg-[#b91c1c] px-4 py-2  text-white font-semibold'>Giá mua</div>
-                                    <div className='py-2'>{formatNumber(discountedPrice)}đ</div>
+                                                                        <div className='py-2'>{formatNumber(selectedPrice)}đ</div>
                                 </div>
                             </div>
                             <Box mt="md">

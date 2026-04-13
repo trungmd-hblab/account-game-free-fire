@@ -70,7 +70,9 @@ const CustomerTable = (props) => {
 
         >
           <Table.Td>{item?.username}</Table.Td>
-          <Table.Td>{formatNumber(item?.moneyBalance)}</Table.Td>
+          <Table.Td>{formatNumber(item?.atmBalance || 0)}</Table.Td>
+          <Table.Td>{formatNumber(item?.cardBalance || 0)}</Table.Td>
+          <Table.Td>{formatNumber(item?.promotionBalance || 0)}</Table.Td>
           <Table.Td>{formatNumber(item?.diamondBalance)}</Table.Td>
           <Table.Td>
             <Badge color={item.isActive ? "green" : "red"}>

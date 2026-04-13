@@ -63,7 +63,7 @@ function CardCate(props) {
     router.push(`/danh_muc/${id}`)
   }
 
-  const originalPrice = card?.price || 0;
+  const originalPrice = card?.priceAtm ?? card?.price ?? 0;
   const discount = card?.discountPercent || 0;
   const discountedPrice = originalPrice - (originalPrice * discount / 100)
 

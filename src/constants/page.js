@@ -14,7 +14,9 @@ export const page = {
     searchPlaceholder: "Nhập từ tìm kiếm",
     tableColumns: [
       "Tên tài khoản",
-      "Số dư tiền (VND)",
+      "Số dư ATM (VND)",
+      "Số dư thẻ cào (VND)",
+      "Số dư khuyến mãi (VND)",
       "Số dư kim cương",
       "Trạng thái",
       "Hành động",
@@ -153,6 +155,7 @@ export const page = {
       "Mức giảm (%)",
       "Người đăng",
       "Trạng thái",
+      "Người mua",
       "Thời gian bán",
     ],
     formAdd: {
@@ -183,6 +186,7 @@ export const page = {
     tableColumns: [
       "Tên tài khoản",
       "Loại",
+      "Loại ví",
       "Lý do",
       "Số tiền (VND)",
       "Thời gian tạo",
@@ -191,6 +195,7 @@ export const page = {
     formAdd: {
       title: "Cộng/Trừ tiền",
       type: "Loại",
+      paymentSource: "Ví",
       clientName: "Tên tài khoản",
       money: "Số tiền",
       reason: "Lý do",

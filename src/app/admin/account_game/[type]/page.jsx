@@ -32,7 +32,8 @@ function ListAccount({ params }) {
         type: TYPE_FREE_FIRE_GAME,
         statuses: status,
         categoryId: '',
-        createdBy:''
+        createdBy:'',
+        ...(type == SOLD ? { orderBy: 'purchasedAt', orderDirection: 'desc' } : {}),
     })
 
     const { data: listCate, isLoading } = useGetCategories({

@@ -7,15 +7,19 @@ const useStore = create((set) => ({
   phoneNumber:'',
   username: '',
   diamondBalance: 0,
-  moneyBalance: 0,
+  atmBalance: 0,
+  cardBalance: 0,
+  promotionBalance: 0,
   setUserProfile: (profile) => set({
     code:profile?.code,
     name: profile?.name,
     email: profile?.email,
     phoneNumber: profile?.phoneNumber,
     username: profile?.username,
-    diamondBalance: profile?.diamondBalance,
-    moneyBalance: profile?.moneyBalance,
+    diamondBalance: profile?.diamondBalance || 0,
+    atmBalance: profile?.atmBalance || 0,
+    cardBalance: profile?.cardBalance || 0,
+    promotionBalance: profile?.promotionBalance || 0,
   }),
 }));
 

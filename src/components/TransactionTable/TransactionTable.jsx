@@ -4,6 +4,12 @@ import { formatNumber } from '@/utils/formatNumber';
 import { Badge, Table, Text } from '@mantine/core';
 import React from 'react';
 
+const PAYMENT_SOURCE_LABEL = {
+  atm: 'ATM',
+  card: 'Thẻ cào',
+  promotion: 'Khuyến mãi',
+};
+
 function TransactionTable(props) {
   const { columns, data, limitView, totalItems, currentPage, onPageChange, onLimitChange } = props
   const tableHead = () => {
@@ -25,6 +31,9 @@ function TransactionTable(props) {
           </Table.Td>
           <Table.Td>
             {item?.type == "add_money" ? <Badge size='xs' color='green'>Công tiền</Badge> : <Badge size='xs' color='red'>Trừ tiền</Badge>}
+          </Table.Td>
+          <Table.Td>
+            {PAYMENT_SOURCE_LABEL[item?.paymentSource] || '--'}
           </Table.Td>
           <Table.Td>
             {item?.note}

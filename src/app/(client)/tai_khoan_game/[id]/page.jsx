@@ -31,9 +31,12 @@ function PageDetailAccountGame() {
     // if (isLoading) return <p>Loading...</p>;
     // if (isError) return <p>Error loading data: {error.message}</p>;
 
-    const originalPrice = account?.price || 0;
+    const basePrice = account?.price || 0;
+    const atmPrice = account?.priceAtm ?? basePrice;
+    const cardPrice = account?.priceCard ?? basePrice;
     const discount = account?.discountPercent || 0;
-    const discountedPrice = originalPrice - (originalPrice * discount / 100);
+    const discountedAtmPrice = atmPrice - (atmPrice * discount / 100);
+    const discountedCardPrice = cardPrice - (cardPrice * discount / 100);
 
     let loginType = '';
     LOGIN_TYPE_ACCOUNT.forEach((item) => {
@@ -85,20 +88,42 @@ function PageDetailAccountGame() {
                                 </Box>
                             </Box>
                         }
-                        {account?.discountPercent && <Box >
-                            <Text size="lg" style={{ color: "#848383", textDecoration: "line-through" }}>
-                                {formatNumber(originalPrice)}đ
-                            </Text>
-                        </Box>
-                        }
+                        <Box className='flex flex-col gap-2'>
+                            <Box className='flex items-center justify-between'>
+                                <Text fw={700}>Giá ATM:</Text>
+                                <Box className='text-right'>
+                                    {account?.discountPercent > 0 && (
+                                        <Text size="sm" c="dimmed" td="line-through">
+                                            {formatNumber(atmPrice)}đ
+                                        </Text>
+                                    )}
+                                    <Text size="30px" style={{ color: 'green', fontWeight: 700 }}>
+                                        {formatNumber(discountedAtmPrice)}đ
+                                    </Text>
+                                </Box>
+                            </Box>
 
-                        <Box className='flex items-center justify-between'>
-                            <Text size="32px" style={{ color: "green", fontWeight: 700 }}>
-                                {formatNumber(discountedPrice)}đ
-                            </Text>
-                            {account?.discountPercent && <Badge color="red" variant="filled">
-                                Giảm giá {account.discountPercent}%
-                            </Badge>}
+                            <Box className='flex items-center justify-between'>
+                                <Text fw={700}>Giá nạp thẻ:</Text>
+                                <Box className='text-right'>
+                                    {account?.discountPercent > 0 && (
+                                        <Text size="sm" c="dimmed" td="line-through">
+                                            {formatNumber(cardPrice)}đ
+                                        </Text>
+                                    )}
+                                    <Text size="30px" style={{ color: '#1f2c64', fontWeight: 700 }}>
+                                        {formatNumber(discountedCardPrice)}đ
+                                    </Text>
+                                </Box>
+                            </Box>
+
+                            {account?.discountPercent > 0 && (
+                                <Box className='flex justify-end'>
+                                    <Badge color="red" variant="filled">
+                                        Giảm giá {account.discountPercent}%
+                                    </Badge>
+                                </Box>
+                            )}
                         </Box>
 
 

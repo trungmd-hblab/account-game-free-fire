@@ -88,7 +88,9 @@ const EditCustomerForm = (props) => {
                     />
                     <TextInput label="Tên tài khoản" value={customerData.username} readOnly disabled />
                     <TextInput label="Số điện thoại" value={customerData.phoneName} readOnly disabled />
-                    <TextInput label="Số dư tiền (VND)" value={formatNumber(customerData.moneyBalance)} readOnly disabled />
+                    <TextInput label="Số dư ATM (VND)" value={formatNumber(customerData?.atmBalance || 0)} readOnly disabled />
+                    <TextInput label="Số dư thẻ cào (VND)" value={formatNumber(customerData?.cardBalance || 0)} readOnly disabled />
+                    <TextInput label="Số dư khuyến mãi (VND)" value={formatNumber(customerData?.promotionBalance || 0)} readOnly disabled />
                     <TextInput label="Số dư kim cương" value={formatNumber(customerData.diamondBalance)} readOnly disabled />
                     <Box>
                         <Text size='sm' fw={500}>Trạng thái</Text>

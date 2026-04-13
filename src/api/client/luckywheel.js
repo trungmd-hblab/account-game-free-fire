@@ -14,9 +14,12 @@ export const useGetLuckyWheel = (queryParams) => {
     });
 };
 
-export async function clickLuckyWheel(id) {
+export async function clickLuckyWheel(id, paymentSource = 'atm') {
     try {
-        const response = await api.post(API_BASE_URL + CLIENT_LUCKY_WHEEL + '/' + id + '/spinning');
+        const response = await api.post(
+            API_BASE_URL + CLIENT_LUCKY_WHEEL + '/' + id + '/spinning',
+            { paymentSource }
+        );
         const profile = await getProfile();
         useStore.getState().setUserProfile(profile?.result);
 

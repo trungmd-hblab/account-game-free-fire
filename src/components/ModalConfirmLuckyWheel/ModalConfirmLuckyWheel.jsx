@@ -6,65 +6,117 @@ import { formatNumber } from '@/utils/formatNumber';
 import { Box, Button, Image, Modal, Text, Title } from '@mantine/core';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-function ModalConfirmLuckyWheel({ account, type , setStartGame, setEndGame, setIndexPrize}) {
-    const [isBalanceSufficient, setIsBalanceSufficient] = useState(true);
+function ModalConfirmLuckyWheel({
+    account,
+    type,
+    paymentSource,
+    setPaymentSource,
+    setStartGame,
+    setEndGame,
+    setIndexPrize,
+}) {
     const [openLogin, setOpenLogin] = useState(false);
     const [openNotEnoughBalance, setOpenNotEnoughBalance] = useState(false);
-    const [openFormBuy, setOpenFormBuy] = useState(false);
     const [loading, setLoading] = useState(false)
-    const { username, moneyBalance } = useStore((state) => ({
+    const [internalPaymentSource, setInternalPaymentSource] = useState('atm');
+    const { username, atmBalance, cardBalance, promotionBalance } = useStore((state) => ({
         username: state.username,
-        moneyBalance: state.moneyBalance,
+        atmBalance: state.atmBalance,
+        cardBalance: state.cardBalance,
+        promotionBalance: state.promotionBalance,
     }));
-    const router = useRouter();
+        const activePaymentSource = paymentSource ?? internalPaymentSource;
+        const setActivePaymentSource = setPaymentSource ?? setInternalPaymentSource;
 
-    useEffect(() => {
-        const checkToken = Cookies.get('client_accessToken');
-        if (checkToken && username) {
-            setIsBalanceSufficient(moneyBalance >= account?.fee?.value);
-        }
-    }, [moneyBalance, username, account]);
+        const selectedBalance = activePaymentSource === 'atm'
+      ? atmBalance
+            : activePaymentSource === 'card'
+        ? cardBalance
+        : promotionBalance;
+    const feeValue = Number(account?.fee?.value || 0);
+    const hasEnoughBalance = Number(selectedBalance || 0) >= feeValue;
+    const router = useRouter();
 
     const handleAddFunds = () => {
         router.push('/tai_khoan/nap_atm');
     };
 
-    const handleOpenForm = () => {
-        if (Cookies.get('client_accessToken')) {
-            if (!isBalanceSufficient) {
-                setOpenNotEnoughBalance(true);
-            } else {
-                setOpenFormBuy(true);
-            }
-        } else {
+    const handleConfirmPlayGame = async () => {
+        if (!Cookies.get('client_accessToken')) {
             setOpenLogin(true);
+            return;
+        }
+
+        if (!hasEnoughBalance) {
+            setOpenNotEnoughBalance(true);
+            return;
+        }
+
+        if(type === 'pick') {
+            setLoading(true);
+            setEndGame(false); 
+            try {
+                const res = await clickLuckyWheel(account._id, activePaymentSource);
+                if (res && res.result) {
+                    setIndexPrize(res.result);
+                }
+                setStartGame(true);
+            } catch (error) {
+                if (error?.response?.data?.message?.includes('không đủ')) {
+                    setOpenNotEnoughBalance(true);
+                }
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
-    const handleConfirmPlayGame = async () => {
-        if(type == 'pick'){
-            setLoading(true)
-            setEndGame(false)
-            const res = await clickLuckyWheel(account._id);
-            if (res && res.result) {
-                setIndexPrize(res.result)
-            }
-            setStartGame(true)
-            
-        }
-            setLoading(false)
-            setOpenFormBuy(false)
-    }
-
     return (
         <>
-            <Button color="#1f2c64" className="mt-3 w-full" onClick={handleOpenForm}>
-                {type == 'pick'
-                ? "Chơi ngay" : "Quay ngay"
-                }
+            <div className='flex gap-2 mt-3 mb-3'>
+                <Button
+                    variant={activePaymentSource === 'atm' ? 'filled' : 'outline'}
+                    onClick={() => setActivePaymentSource('atm')}
+                >
+                    ATM
                 </Button>
+                <Button
+                    variant={activePaymentSource === 'card' ? 'filled' : 'outline'}
+                    onClick={() => setActivePaymentSource('card')}
+                >
+                    Thẻ cào
+                </Button>
+                <Button
+                    variant={activePaymentSource === 'promotion' ? 'filled' : 'outline'}
+                    onClick={() => setActivePaymentSource('promotion')}
+                >
+                    Khuyến mãi
+                </Button>
+            </div>
+
+            <div className='flex border mb-3'>
+                <div className='w-[50%] text-center'>
+                    <div className='bg-[#b91c1c] px-4 py-2 text-white font-semibold'>Số dư hiện tại</div>
+                    <div className='py-2'>{formatNumber(selectedBalance)}đ</div>
+                </div>
+                <div className='w-[50%] text-center'>
+                    <div className='bg-[#b91c1c] px-4 py-2 text-white font-semibold'>Giá mỗi lần chơi</div>
+                    <div className='py-2'>{formatNumber(account?.fee?.value)}đ</div>
+                </div>
+            </div>
+
+            {type === 'pick' && (
+                <Button
+                    color="#1f2c64"
+                    className="w-full"
+                    onClick={handleConfirmPlayGame}
+                    loading={loading}
+                >
+                    Chơi ngay
+                </Button>
+            )}
 
             <ModalCheckLogin opened={openLogin} setOpend={setOpenLogin} />
 
@@ -91,56 +143,6 @@ function ModalConfirmLuckyWheel({ account, type , setStartGame, setEndGame, setI
                         Nạp tiền
                     </Button>
                 </Box>
-            </Modal>
-            <Modal
-                opened={openFormBuy}
-                onClose={() => setOpenFormBuy(false)}
-                title={<div className='font-semibold'>Thông tin lượt chơi</div>}
-                centered
-            >
-                {username ? (
-                    <Box >
-                        <Title order={4}>
-                            {
-                                type == 'pick' ? 
-                                'Phí sẽ được thu mỗi lần nhấn nút bắt đầu chơi.' :
-                                'Phí sẽ được thu mỗi lần nhấn nút quay.'
-                            }
-                        </Title>
-                        <div className='flex  border mt-4 mb-5'>
-                            <div className='w-[50%] text-center'>
-                                <div className=' bg-[#b91c1c] px-4 py-2 text-white font-semibold' >Số dư hiện tại</div>
-                                <div className='py-2'>{formatNumber(moneyBalance)}đ</div>
-                            </div>
-                            <div className='w-[50%] text-center'>
-                                <div className=' bg-[#b91c1c] px-4 py-2  text-white font-semibold'>Giá mỗi lần chơi</div>
-                                <div className='py-2'>{formatNumber(account?.fee?.value)}đ</div>
-                            </div>
-                        </div>
-                        <Box mt="md">
-                            {type == 'pick' ? (
-                                <Button
-                                color="green"
-                                style={{ marginLeft: '16px' }}
-                                onClick={handleConfirmPlayGame}
-                                loading={loading}
-                                >
-                               Bắt đầu chơi
-                                </Button>
-                            ) : (
-                                <Button
-                                variant="outline"
-                                color="green"
-                                style={{ marginLeft: '16px' }}
-                                onClick={() => setOpenFormBuy(false)}
-                                 >
-                                    Tôi đã hiểu
-                                </Button>
-                            )}
-                           
-                        </Box>
-                    </Box>
-                ) : <></>}
             </Modal>
         </>
     );

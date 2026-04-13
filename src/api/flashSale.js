@@ -71,3 +71,18 @@ export const useRemoveFlashSale = () => {
     },
   });
 };
+
+const seedTodayFlashSale = async () => {
+  const response = await api.post(`${API_BASE_URL}${ADMIN_FLASH_SALES}/seed-today`);
+  return response.data;
+};
+
+export const useSeedTodayFlashSale = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation(seedTodayFlashSale, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('flashSales');
+    },
+  });
+};

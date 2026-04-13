@@ -28,7 +28,8 @@ const TransactionForm = ({ opened, onClose, onSubmit }) => {
 
     const { control, handleSubmit, formState: { errors }, reset, setValue, register } = useForm({
         defaultValues: {
-            type: '0',
+            type: 'add',
+            paymentSource: 'atm',
             username: '',
             money: '',
             reason: '',
@@ -59,6 +60,24 @@ const TransactionForm = ({ opened, onClose, onSubmit }) => {
                             ]}
                             {...field}
                             error={errors.type?.message}
+                        />
+                    )}
+                />
+                <Controller
+                    name="paymentSource"
+                    control={control}
+                    rules={{ required: 'Ví là bắt buộc' }}
+                    render={({ field }) => (
+                        <Select
+                            checkIconPosition="right"
+                            label={page.transaction.formAdd.paymentSource}
+                            data={[
+                                { value: 'atm', label: 'Ví ATM' },
+                                { value: 'card', label: 'Ví thẻ cào' },
+                                { value: 'promotion', label: 'Ví khuyến mãi' }
+                            ]}
+                            {...field}
+                            error={errors.paymentSource?.message}
                         />
                     )}
                 />

@@ -15,6 +15,7 @@ function PageDetailLuckyWheel() {
   const [startGame, setStartGame] = useState(false);
   const [endGame, setEndGame] = useState(false);
   const [indexPrize, setIndexPrize] = useState(null);
+  const [paymentSource, setPaymentSource] = useState('atm');
 
   const { data, isLoading, isError, error } = useGetDetailLuckyWheel(id);
   const { data: luckyWheelWinner } = useGetDetailLuckyWheelWinner();
@@ -38,6 +39,7 @@ function PageDetailLuckyWheel() {
                 wheelImage={account?.coverImageUrl}
                 pointerImage="/images/image.png"
                 account={account}
+                paymentSource={paymentSource}
               />
               }
             </div>
@@ -75,7 +77,15 @@ function PageDetailLuckyWheel() {
                   </Text>
                 </div>
                 <div>
-                  <ModalConfirmLuckyWheel account={account}  type={account?.type} setStartGame={setStartGame} setEndGame={setEndGame} setIndexPrize={setIndexPrize}/>
+                  <ModalConfirmLuckyWheel
+                    account={account}
+                    type={account?.type}
+                    paymentSource={paymentSource}
+                    setPaymentSource={setPaymentSource}
+                    setStartGame={setStartGame}
+                    setEndGame={setEndGame}
+                    setIndexPrize={setIndexPrize}
+                  />
                 </div>
               </>
             }

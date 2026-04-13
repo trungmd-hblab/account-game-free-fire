@@ -11,7 +11,7 @@ import ModalCheckLogin from '../ModalCheckLogin/ModalCheckLogin';
 import classes from './LuckyWheel.module.css';
 import { clickLuckyWheel } from '@/api/client/spinLuckyWheel';
 
-const LuckyWheel = ({ wheelImage, pointerImage, account }) => {
+const LuckyWheel = ({ wheelImage, pointerImage, account, paymentSource: externalPaymentSource }) => {
   const wheelRef = useRef(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [prizes, setPrizes] = useState([]);
@@ -22,20 +22,23 @@ const LuckyWheel = ({ wheelImage, pointerImage, account }) => {
   const [isConfirm, setIsConfirm] = useState(false);
   const [openFormBuy, setOpenFormBuy] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
-  const [isBalanceSufficient, setIsBalanceSufficient] = useState(true);
+  const [paymentSource, setPaymentSource] = useState('atm');
   const [openNotEnoughBalance, setOpenNotEnoughBalance] = useState(false);
   const router = useRouter();
-  const { username, moneyBalance } = useStore((state) => ({
+  const { username, atmBalance, cardBalance, promotionBalance } = useStore((state) => ({
     username: state.username,
-    moneyBalance: state.moneyBalance,
+    atmBalance: state.atmBalance,
+    cardBalance: state.cardBalance,
+    promotionBalance: state.promotionBalance,
   }));
-
-  useEffect(() => {
-    const checkToken = Cookies.get('client_accessToken');
-    if (checkToken) {
-      setIsBalanceSufficient(moneyBalance >= account?.fee?.value);
-    }
-  }, [account, moneyBalance]);
+  const activePaymentSource = externalPaymentSource ?? paymentSource;
+  const selectedBalance = activePaymentSource === 'atm'
+    ? atmBalance
+    : activePaymentSource === 'card'
+      ? cardBalance
+      : promotionBalance;
+  const feeValue = Number(account?.fee?.value || 0);
+  const hasEnoughBalance = Number(selectedBalance || 0) >= feeValue;
 
   const handleAddFunds = () => {
     router.push('/tai_khoan/nap_atm');
@@ -50,14 +53,18 @@ const LuckyWheel = ({ wheelImage, pointerImage, account }) => {
 
   const spin = async () => {
     if (Cookies.get('client_accessToken')) {
-      if (!isBalanceSufficient) {
+      if (!hasEnoughBalance) {
         setOpenNotEnoughBalance(true);
       } else {
         if (isSpinning) return;
-        if (isConfirm) {
+        if (externalPaymentSource || isConfirm) {
+          if (!hasEnoughBalance) {
+            setOpenNotEnoughBalance(true);
+            return;
+          }
           setIsSpinning(true);
           try {
-            const res = await clickLuckyWheel(account._id);
+            const res = await clickLuckyWheel(account._id, activePaymentSource);
 
             if (res && res.result) {
               const result = res.result;
@@ -89,9 +96,10 @@ const LuckyWheel = ({ wheelImage, pointerImage, account }) => {
               throw new Error('Invalid response from API');
             }
           } catch (error) {
-            setIsBalanceSufficient(false);
             setIsSpinning(false);
-            setOpenNotEnoughBalance(true);
+            if (error?.response?.data?.message?.includes('không đủ')) {
+              setOpenNotEnoughBalance(true);
+            }
           }
         } else {
           setOpenFormBuy(true);
@@ -196,10 +204,30 @@ const LuckyWheel = ({ wheelImage, pointerImage, account }) => {
         {username ? (
           <Box >
             <Title order={4}>Phí sẽ được thu mỗi lần nhấn nút quay.</Title>
+            <div className='flex gap-2 mt-4'>
+              <Button
+                variant={paymentSource === 'atm' ? 'filled' : 'outline'}
+                onClick={() => setPaymentSource('atm')}
+              >
+                Ví ATM
+              </Button>
+              <Button
+                variant={paymentSource === 'card' ? 'filled' : 'outline'}
+                onClick={() => setPaymentSource('card')}
+              >
+                Ví thẻ cào
+              </Button>
+              <Button
+                variant={paymentSource === 'promotion' ? 'filled' : 'outline'}
+                onClick={() => setPaymentSource('promotion')}
+              >
+                Ví khuyến mãi
+              </Button>
+            </div>
             <div className='flex  border mt-4 mb-5'>
               <div className='w-[50%] text-center'>
                 <div className=' bg-[#b91c1c] px-4 py-2 text-white font-semibold' >Số dư hiện tại</div>
-                <div className='py-2'>{formatNumber(moneyBalance)}đ</div>
+                <div className='py-2'>{formatNumber(selectedBalance)}đ</div>
               </div>
               <div className='w-[50%] text-center'>
                 <div className=' bg-[#b91c1c] px-4 py-2  text-white font-semibold'>Giá mỗi lần chơi</div>

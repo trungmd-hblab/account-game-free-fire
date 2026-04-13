@@ -24,7 +24,9 @@ function Profile() {
     email,
     phoneNumber,
     username,
-    moneyBalance,
+    atmBalance,
+    cardBalance,
+    promotionBalance,
     diamondBalance,
   } = useStore((state) => ({
     code: state?.code,
@@ -32,9 +34,12 @@ function Profile() {
     email: state?.email,
     phoneNumber: state?.phoneNumber,
     username: state?.username,
-    moneyBalance: state?.moneyBalance,
+    atmBalance: state?.atmBalance,
+    cardBalance: state?.cardBalance,
+    promotionBalance: state?.promotionBalance,
     diamondBalance: state?.diamondBalance,
   }));
+  const totalBalance = (atmBalance || 0) + (cardBalance || 0) + (promotionBalance || 0);
 
   const {
     handleSubmit,
@@ -49,7 +54,10 @@ function Profile() {
       email: email || "",
       phoneNumber: phoneNumber || "",
       username: username || "",
-      moneyBalance: moneyBalance || 0,
+  totalBalance: totalBalance || 0,
+      atmBalance: atmBalance || 0,
+      cardBalance: cardBalance || 0,
+      promotionBalance: promotionBalance || 0,
       diamondBalance: diamondBalance || 0,
     },
   });
@@ -60,7 +68,10 @@ function Profile() {
     setValue("email", email);
     setValue("phoneNumber", phoneNumber);
     setValue("username", username);
-    setValue("moneyBalance", moneyBalance);
+  setValue("totalBalance", totalBalance);
+    setValue("atmBalance", atmBalance);
+    setValue("cardBalance", cardBalance);
+    setValue("promotionBalance", promotionBalance);
     setValue("diamondBalance", diamondBalance);
   }, [
     code,
@@ -68,7 +79,10 @@ function Profile() {
     email,
     phoneNumber,
     username,
-    moneyBalance,
+  totalBalance,
+    atmBalance,
+    cardBalance,
+    promotionBalance,
     diamondBalance,
     setValue,
   ]);
@@ -159,9 +173,24 @@ function Profile() {
               error={errors.phoneNumber?.message}
             />
             <TextInput
-              label="Số dư tiền"
+              label="Tổng số dư"
               disabled
-              value={formatNumber(watch("moneyBalance")) + " đ"}
+              value={formatNumber(watch("totalBalance")) + " đ"}
+            />
+            <TextInput
+              label="Số dư ATM"
+              disabled
+              value={formatNumber(watch("atmBalance")) + " đ"}
+            />
+            <TextInput
+              label="Số dư thẻ cào"
+              disabled
+              value={formatNumber(watch("cardBalance")) + " đ"}
+            />
+            <TextInput
+              label="Số dư khuyến mãi"
+              disabled
+              value={formatNumber(watch("promotionBalance")) + " đ"}
             />
             <TextInput
               label="Số dư kim cương"

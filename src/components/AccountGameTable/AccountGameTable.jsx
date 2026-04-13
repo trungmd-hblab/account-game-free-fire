@@ -75,9 +75,12 @@ const AccountGameTable = (props) => {
                             <Button size='xs' color='red' onClick={() => handleOpenModalConfirm(item._id)}>Xóa</Button>
                         </Table.Td>
                     ) : (
-                        <Table.Td>
-                            {formatDate(item?.purchasedAt)}
-                        </Table.Td>
+                        <>
+                            <Table.Td>{item?.buyer || '--'}</Table.Td>
+                            <Table.Td>
+                                {formatDate(item?.purchasedAt)}
+                            </Table.Td>
+                        </>
                     )}
                 </Table.Tr>
             ));
