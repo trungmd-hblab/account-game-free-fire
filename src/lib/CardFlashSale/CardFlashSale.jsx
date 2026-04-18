@@ -57,6 +57,7 @@ function CardFlashSale(props) {
   const { card, isInTimeSale, cateId, index } = props;
   const { classes } = useStyles();
   const router = useRouter();
+  const displayImage = card?.imageUrls?.[0] || card?.imageUrl;
 
   const originalPrice = card?.price || 0;
   const discount = card?.discount || 0;
@@ -74,9 +75,9 @@ function CardFlashSale(props) {
       }}
     >
       <Box>
-        {card?.imageUrl &&
+        {displayImage &&
           <ImageMantine
-            src={card?.imageUrl}
+            src={displayImage}
             alt="anh-san-pham-flash-sale"
             className={classes.image}
           />

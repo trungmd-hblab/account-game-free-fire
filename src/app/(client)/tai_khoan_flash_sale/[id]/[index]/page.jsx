@@ -33,6 +33,11 @@ function PageDetailAccountGameFashSale() {
     // if (isError) return <p>Error loading data: {error.message}</p>;
 
     const account = data?.result?.flashSaleAccounts ? data?.result?.flashSaleAccounts[index] : {};
+    const accountImages = account?.imageUrls?.length
+        ? account.imageUrls
+        : account?.imageUrl
+            ? [account.imageUrl]
+            : [];
     const originalPrice = account?.price || 0;
     const discount = account?.discount || 0;
     const discountedPrice = originalPrice - (originalPrice * discount / 100);
@@ -47,15 +52,16 @@ function PageDetailAccountGameFashSale() {
                     align={{ base: "flex-start", md: "flex-start" }}
                 >
                     <Box className=' md:flex-[0.6]'>
-                        {account?.imageUrl &&
+                        {accountImages.map((image, imageIndex) => (
                             <Image
-                                src={account?.imageUrl}
-                                alt="anh_account_flash_sale"
+                                key={`${image}-${imageIndex}`}
+                                src={image}
+                                alt={`anh_account_flash_sale_${imageIndex + 1}`}
                                 radius="sm"
                                 mb="sm"
                                 width="100%"
                             />
-                        }
+                        ))}
                     </Box>
 
                     <Box className='w-full md:flex-[0.4]'>

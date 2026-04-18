@@ -22,6 +22,7 @@ function FlashSaleForm(props) {
                     title: '',
                     accountId: '',
                     imageUrl: '',
+                    imageUrls: [],
                     imageFile: null,
                     description: '',
                     price: 0,
@@ -45,8 +46,21 @@ function FlashSaleForm(props) {
         if (mode === 'edit' && data) {
             data?.result?.startDateTimeAt && setValue('startDateTimeAt', new Date(data?.result?.startDateTimeAt));
             data?.result?.endDateTimeAt && setValue('endDateTimeAt', new Date(data?.result?.endDateTimeAt));
-            setValue('flashSaleAccounts', data?.result?.flashSaleAccounts);
-            data?.result?.flashSaleAccounts?.forEach((account, index) => {
+            const normalizedAccounts = (data?.result?.flashSaleAccounts || []).map((account) => {
+                const imageUrls = account?.imageUrls?.length
+                    ? account.imageUrls
+                    : account?.imageUrl
+                        ? [account.imageUrl]
+                        : [];
+                return {
+                    ...account,
+                    imageUrls,
+                    imageUrl: imageUrls[0] || account?.imageUrl || '',
+                    imageFile: null,
+                };
+            });
+            setValue('flashSaleAccounts', normalizedAccounts);
+            normalizedAccounts?.forEach((account, index) => {
                 account.imageUrl && setPreviewImages(prev => ({ ...prev, [index]: account.imageUrl }));
             });
         }
@@ -62,9 +76,18 @@ function FlashSaleForm(props) {
         const flashSaleAccounts = await Promise.all(data.flashSaleAccounts.map(async (account) => {
             if (account.imageFile) {
                 const imageUrl = await uploadImage(account.imageFile);
-                return { ...account, imageUrl };
+                return { ...account, imageUrl, imageUrls: [imageUrl] };
             }
-            return account;
+            const imageUrls = account?.imageUrls?.length
+                ? account.imageUrls
+                : account?.imageUrl
+                    ? [account.imageUrl]
+                    : [];
+            return {
+                ...account,
+                imageUrls,
+                imageUrl: imageUrls[0] || '',
+            };
         }));
 
         onSubmit({ ...data, flashSaleAccounts });
@@ -144,6 +167,7 @@ function FlashSaleForm(props) {
             title: '',
             accountId: '',
             imageUrl: '',
+            imageUrls: [],
             imageFile: null,
             description: '',
             price: 0,
