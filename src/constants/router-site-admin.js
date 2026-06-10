@@ -11,6 +11,7 @@ import {
   IconPlayCard,
   IconRosetteDiscountFilled,
   IconSettingsFilled,
+  IconShoppingBag,
   IconStarsFilled,
   IconUserFilled,
   IconWheel,
@@ -160,6 +161,29 @@ export const router = [
       {
         label: "Lịch sử chơi lật thẻ",
         link: "/admin/flip_card/histories",
+        role: ["admin"],
+      },
+    ],
+  },
+  {
+    label: "Túi mù",
+    link: "/admin/blind_bag",
+    icon: IconShoppingBag,
+    role: ["admin"],
+    links: [
+      {
+        label: "Túi mù đang hoạt động",
+        link: "/admin/blind_bag/active",
+        role: ["admin"],
+      },
+      {
+        label: "Túi mù không hoạt động",
+        link: "/admin/blind_bag/inactive",
+        role: ["admin"],
+      },
+      {
+        label: "Lịch sử chơi túi mù",
+        link: "/admin/blind_bag/histories",
         role: ["admin"],
       },
     ],

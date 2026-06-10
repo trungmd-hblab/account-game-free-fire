@@ -55,12 +55,12 @@ const useStyles = createStyles((theme, _, u) => ({
 }));
 
 function CardLuckyWheel(props) {
-    const { card } = props;
+    const { card, basePath = '/vong_quay_may_man' } = props;
     const { classes } = useStyles();
     const router = useRouter();
 
     const handleViewDetailAccount = (id) => {
-        router.push(`/vong_quay_may_man/${id}`)
+        router.push(`${basePath}/${id}`)
     }
 
     return (

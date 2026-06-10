@@ -292,6 +292,24 @@ export const page = {
     buttonAdd: "Tạo mới",
 
   },
+  blindBag: {
+    title: "Danh sách túi mù",
+    searchPlaceholder: "Nhập từ tìm kiếm",
+    tableColumns: [
+      "Tên túi mù",
+      "Mô tả",
+      "Hành động",
+    ],
+    tableHistoryColumns: [
+      "Tên khách hàng",
+      "Tên túi mù",
+      "Giá (VND)",
+      "Loại trúng thưởng",
+      "Phần thưởng (Số KC/ Mã Acc game)",
+      "Thời gian chơi",
+    ],
+    buttonAdd: "Tạo mới",
+  },
   login: {
     title: "Đăng nhập",
     titleRegister: "Đăng ký",

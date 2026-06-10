@@ -56,6 +56,9 @@ const HeaderClient = () => {
                 <Link className={`${classes.headerMenuLink} ${classes.menu_item} ${(pathname == "/danh_sach_vong_quay_may_man") ? classes.menu_item_active : ""}`} href="/danh_sach_vong_quay_may_man">
                   <Text fw={600} className='hover:text-black uppercase text-[#797979] lg:text-[16px] sm:text-sm'>Vòng quay may mắn</Text>
                 </Link>
+                <Link className={`${classes.headerMenuLink} ${classes.menu_item} ${pathname.startsWith("/tui_mu") ? classes.menu_item_active : ""}`} href="/tui_mu">
+                  <Text fw={600} className='hover:text-black uppercase text-[#797979] lg:text-[16px] sm:text-sm'>Túi mù</Text>
+                </Link>
               </div>
               <div className="flex items-center space-x-4">
                 <AvatarUser />
@@ -100,6 +103,9 @@ const HeaderClient = () => {
             </Link>
             <Link href="/danh_sach_vong_quay_may_man" onClick={closeDrawer} className={`${(pathname == "/danh_sach_vong_quay_may_man") ? classes.menu_item_active : ""}`}>
               <Text size='md' fw={600} className='hover:text-black uppercase text-[#797979]'>Vòng quay may mắn</Text>
+            </Link>
+            <Link href="/tui_mu" onClick={closeDrawer} className={`${pathname.startsWith("/tui_mu") ? classes.menu_item_active : ""}`}>
+              <Text size='md' fw={600} className='hover:text-black uppercase text-[#797979]'>Túi mù</Text>
             </Link>
           </div>
         </Drawer>
