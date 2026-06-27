@@ -1,6 +1,6 @@
 import UserButton from '@/lib/UserButton/UserButton';
 import { UnstyledButton } from '@mantine/core';
-import { IconBrandProducthunt, IconBrandStorytel, IconBuildingBank, IconCashBanknote, IconChartLine, IconCoin, IconDeviceGamepad, IconDeviceMobile, IconDiamond, IconKey, IconMoodWink2, IconUser } from '@tabler/icons-react';
+import { IconBrandProducthunt, IconBrandStorytel, IconChartLine, IconCoin, IconDeviceGamepad, IconDeviceMobile, IconDiamond, IconKey, IconMoodWink2, IconUser } from '@tabler/icons-react';
 import Link from 'next/link';
 import classes from './NavbarInProfile.module.css';
 
@@ -12,7 +12,6 @@ function NavbarInProfile() {
 
     const serviceForTransaction = [
         { icon: IconCoin, label: 'Nạp thẻ cào', link: '/tai_khoan/nap_the_cao' },
-        { icon: IconBuildingBank, label: 'Nạp ATM', link: '/tai_khoan/nap_atm' },
         { icon: IconDiamond, label: 'Rút kim cương', link: '/tai_khoan/rut_kim_cuong' },
     ];
 
@@ -23,7 +22,6 @@ function NavbarInProfile() {
         { icon: IconMoodWink2, label: 'Lịch sử chơi vòng quay ', link: '/tai_khoan/lich_su_choi_mini_game' },
         { icon: IconBrandStorytel, label: 'Lịch sử mua tài khoản', link: '/tai_khoan/dich_vu_da_thue' },
         { icon: IconDeviceMobile, label: 'Lịch sử nạp thẻ', link: '/tai_khoan/lich_su_nap_the' },
-        { icon: IconCashBanknote, label: 'Lịch sử nạp ATM', link: '/tai_khoan/lich_su_nap_atm' },
     ];
 
     const servicesForClientInfo = serviceForClientInfo.map((link) => (

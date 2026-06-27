@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, Text, Anchor, Image, Group, Box } from '@mantine/core';
-import PluginFacebook from '@/lib/PluginFacebook/PluginFacebook';
 
 const SectionFooter = () => {
   return (
@@ -29,12 +28,6 @@ const SectionFooter = () => {
             <Text className='text-sm'>Chính sách đổi trả</Text>
             <Text className='text-sm'>Chính sách bán hàng</Text>
             <Text className='text-sm'>Hướng dẫn nạp tiền vào web</Text>
-          </Box>
-        </Box>
-        <Box className='flex-[1]'>
-          <Text size='sm' className='mb-2' fw={600} classNames='uppercase'>HUNGAKIRARADOM.VN</Text>
-          <Box className='flex flex-col gap-2 '>
-            <PluginFacebook />
           </Box>
         </Box>
       </Container>

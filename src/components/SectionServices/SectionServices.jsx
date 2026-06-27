@@ -6,9 +6,8 @@ import Link from 'next/link';
 import useClientConfigStore from '@/stores/clientConfig';
 
 function SectionServices() {
-    const { zaloUrl, messUrl } = useClientConfigStore((state) => ({
+    const { zaloUrl } = useClientConfigStore((state) => ({
         zaloUrl: state.clientConfig.zaloUrl,
-        messUrl: state.clientConfig.messUrl
     }));
 
     const services = [
@@ -31,11 +30,6 @@ function SectionServices() {
             label: 'Mini game',
             icon: 'lucky.png',
             link: '/danh_sach_vong_quay_may_man',
-        },
-        {
-            label: 'CSKH 24/7',
-            icon: 'care_customer.png',
-            link: messUrl,
         },
     ];
 

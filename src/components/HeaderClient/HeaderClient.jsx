@@ -47,9 +47,6 @@ const HeaderClient = () => {
                 <Link className={`${classes.headerMenuLink} ${classes.menu_item} ${(pathname == "/tai_khoan/nap_the_cao") ? classes.menu_item_active : ""}`} href={getLink("/tai_khoan/nap_the_cao")}>
                   <Text fw={600} className='hover:text-black uppercase text-[#797979] lg:text-[16px] sm:text-sm'>Nạp tiền</Text>
                 </Link>
-                <Link className={`${classes.headerMenuLink} ${classes.menu_item} ${(pathname == "/tai_khoan/nap_atm") ? classes.menu_item_active : ""}`} href={getLink("/tai_khoan/nap_atm")}>
-                  <Text fw={600} className='hover:text-black uppercase text-[#797979] lg:text-[16px] sm:text-sm'>Nạp atm</Text>
-                </Link>
                 <Link className={`${classes.headerMenuLink} ${classes.menu_item} ${(pathname == "/tai_khoan/rut_kim_cuong") ? classes.menu_item_active : ""}`} href={getLink("/tai_khoan/rut_kim_cuong")}>
                   <Text fw={600} className='hover:text-black uppercase text-[#797979] lg:text-[16px] sm:text-sm'>Rút kim cương</Text>
                 </Link>
@@ -91,9 +88,6 @@ const HeaderClient = () => {
             </Link>
             <Link href={getLink("/tai_khoan/nap_the_cao")} onClick={closeDrawer}>
               <Text size='md' fw={600} className='hover:text-black uppercase text-[#797979]'>Nạp tiền</Text>
-            </Link>
-            <Link href={getLink("/tai_khoan/nap_atm")} onClick={closeDrawer}>
-              <Text size='md' fw={600} className='hover:text-black uppercase text-[#797979]'>Nạp atm</Text>
             </Link>
             <Link href={getLink("/tai_khoan/rut_kim_cuong")} onClick={closeDrawer}>
               <Text size='md' fw={600} className='hover:text-black uppercase text-[#797979]'>Rút kim cương</Text>
