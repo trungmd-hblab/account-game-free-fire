@@ -31,11 +31,11 @@ async function checkGeoBlocked(ip) {
   }
   try {
     const res = await fetch(
-      `https://ip-api.com/json/${ip}?fields=regionName,city,status`,
+      `http://ip-api.com/json/${ip}?fields=regionName,city,status`,
       { signal: AbortSignal.timeout(3000) }
     );
     const data = await res.json();
-    if (data.status !== "success") return true; // fail-closed: block nếu không xác định được
+    if (data.status !== "success") return false;
     return isBlockedRegion(data.regionName || "", data.city || "");
   } catch {
     return false;
