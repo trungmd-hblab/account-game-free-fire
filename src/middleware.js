@@ -31,11 +31,11 @@ async function checkGeoBlocked(ip) {
   }
   try {
     const res = await fetch(
-      `http://ip-api.com/json/${ip}?fields=regionName,city,status`,
+      `https://ip-api.com/json/${ip}?fields=regionName,city,status`,
       { signal: AbortSignal.timeout(3000) }
     );
     const data = await res.json();
-    if (data.status !== "success") return false;
+    if (data.status !== "success") return true; // fail-closed: block nếu không xác định được
     return isBlockedRegion(data.regionName || "", data.city || "");
   } catch {
     return false;
@@ -45,31 +45,35 @@ async function checkGeoBlocked(ip) {
 export async function middleware(req) {
   const { pathname, origin } = req.nextUrl;
 
+  if (process.env.NODE_ENV === "development") {
+    return handleAuth(req, pathname, origin);
+  }
+
+  const ip =
+    (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() ||
+    req.headers.get("x-real-ip") ||
+    "127.0.0.1";
+
   const geoStatus = req.cookies.get("_geo");
-  if (geoStatus?.value === "blocked") {
-    return new NextResponse(null, { status: 502 });
+  const [cachedIp, cachedResult] = (geoStatus?.value || "").split("|");
+
+  // Re-check nếu IP thay đổi (VPN bật/tắt)
+  if (geoStatus && cachedIp === ip) {
+    if (cachedResult === "blocked") return new NextResponse(null, { status: 502 });
+    return handleAuth(req, pathname, origin);
   }
 
-  if (!geoStatus) {
-    const ip =
-      (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() ||
-      req.headers.get("x-real-ip") ||
-      "127.0.0.1";
+  const blocked = await checkGeoBlocked(ip);
 
-    const blocked = await checkGeoBlocked(ip);
-
-    if (blocked) {
-      const res = new NextResponse(null, { status: 502 });
-      res.cookies.set("_geo", "blocked", { maxAge: 3600, httpOnly: true });
-      return res;
-    }
-
-    const response = await handleAuth(req, pathname, origin);
-    response.cookies.set("_geo", "ok", { maxAge: 3600, httpOnly: true });
-    return response;
+  if (blocked) {
+    const res = new NextResponse(null, { status: 502 });
+    res.cookies.set("_geo", `${ip}|blocked`, { maxAge: 3600, httpOnly: true });
+    return res;
   }
 
-  return handleAuth(req, pathname, origin);
+  const response = handleAuth(req, pathname, origin);
+  response.cookies.set("_geo", `${ip}|ok`, { maxAge: 3600, httpOnly: true });
+  return response;
 }
 
 function handleAuth(req, pathname, origin) {
