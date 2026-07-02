@@ -13,7 +13,7 @@ const BLOCKED_REGIONS = [
   "bac ninh", "cao bang", "ha giang", "hai duong", "hoa binh",
   "hung yen", "lang son", "lao cai", "nam dinh", "ninh binh",
   "phu tho", "son la", "thai binh", "thai nguyen", "tuyen quang",
-  "vinh phuc", "yen bai", "lai chau", "dien bien",
+  "vinh phuc", "yen bai", "lai chau", "dien bien", "ha nam",
 ];
 
 function isBlockedRegion(region, city) {
@@ -31,11 +31,12 @@ async function checkGeoBlocked(ip) {
   }
   try {
     const res = await fetch(
-      `http://ip-api.com/json/${ip}?fields=regionName,city,status`,
+      `http://ip-api.com/json/${ip}?fields=countryCode,regionName,city,status`,
       { signal: AbortSignal.timeout(3000) }
     );
     const data = await res.json();
     if (data.status !== "success") return false;
+    if (data.countryCode && data.countryCode !== "VN") return true;
     return isBlockedRegion(data.regionName || "", data.city || "");
   } catch {
     return false;
