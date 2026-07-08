@@ -1,5 +1,7 @@
 'use client';
 import { useFetchClientConfig } from '@/api/config';
+import useStore from '@/stores/clientStore';
+import { canShowAtm } from '@/utils/atmFeature';
 import UserButton from '@/lib/UserButton/UserButton';
 import { UnstyledButton } from '@mantine/core';
 import { IconBrandProducthunt, IconBrandStorytel, IconChartLine, IconCoin, IconDeviceGamepad, IconDeviceMobile, IconDiamond, IconKey, IconMoodWink2, IconUser, IconWallet } from '@tabler/icons-react';
@@ -8,6 +10,7 @@ import classes from './NavbarInProfile.module.css';
 
 function NavbarInProfile() {
     const { data: config } = useFetchClientConfig();
+    const createdAt = useStore((state) => state.createdAt);
 
     const serviceForClientInfo = [
         { icon: IconUser, label: 'Thông tin tài khoản', link: '/tai_khoan' },
@@ -16,7 +19,7 @@ function NavbarInProfile() {
 
     const serviceForTransaction = [
         { icon: IconCoin, label: 'Nạp thẻ cào', link: '/tai_khoan/nap_the_cao' },
-        ...(config?.result?.isShowAtm
+        ...(canShowAtm({ isShowAtm: config?.result?.isShowAtm, createdAt })
             ? [{ icon: IconWallet, label: 'Nạp ATM', link: '/tai_khoan/nap_atm' }]
             : []),
         { icon: IconDiamond, label: 'Rút kim cương', link: '/tai_khoan/rut_kim_cuong' },

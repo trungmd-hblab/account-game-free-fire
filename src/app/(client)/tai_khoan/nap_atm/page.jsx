@@ -1,6 +1,7 @@
 "use client";
 import { useFetchClientConfig } from "@/api/config";
 import useStore from "@/stores/clientStore";
+import { canShowAtm } from "@/utils/atmFeature";
 import {
   ActionIcon,
   Box,
@@ -47,6 +48,7 @@ function InfoRow({ label, value, copyable }) {
 function TransactionATM() {
   const { data: config, isLoading } = useFetchClientConfig();
   const code = useStore((state) => state.code);
+  const createdAt = useStore((state) => state.createdAt);
 
   const qrCodeUrl = useMemo(() => {
     if (!code) return "";
@@ -67,7 +69,7 @@ function TransactionATM() {
 
   if (isLoading) return null;
 
-  if (!config?.result?.isShowAtm) {
+  if (!canShowAtm({ isShowAtm: config?.result?.isShowAtm, createdAt })) {
     notFound();
   }
 
