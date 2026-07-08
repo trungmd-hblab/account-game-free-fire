@@ -58,4 +58,5 @@ export const CLIENT_GET_CATEGORY = "/client/category";
 export const CLIENT_GET_CARDS = "/client/game-account";
 export const CLIENT_GET_GUIDE = "/client/category/";
 export const CLIENT_GET_PROFILE = "/client/my-profile"
+export const CLIENT_CONFIG = "/client/config"
 export const CLIENT_LUCKY_WHEEL = "/client/lucky-wheel";

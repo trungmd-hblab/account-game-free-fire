@@ -1,6 +1,6 @@
 'use client';
 import { useForm, Controller } from "react-hook-form";
-import { TextInput, Button, Group, Card, Image, Text, FileInput, Textarea } from "@mantine/core";
+import { TextInput, Button, Group, Card, Image, Text, FileInput, Textarea, Switch } from "@mantine/core";
 import { useEffect, useState, useRef } from "react";
 import { useFetchConfig, useSaveConfig } from "@/api/config";
 import ControlledNumberInput from "@/lib/ControlledNumberInput/ControlledNumberInput";
@@ -17,7 +17,8 @@ function ConfigPage() {
             bannerUrl: "",
             footerUrl: "",
             zaloUrl: "",
-            messUrl: ""
+            messUrl: "",
+            isShowAtm: true
         }
     });
 
@@ -38,6 +39,7 @@ function ConfigPage() {
             setValue('footerUrl', config?.result?.footerUrl);
             setValue('zaloUrl', config?.result?.zaloUrl);
             setValue('messUrl', config?.result?.messUrl);
+            setValue('isShowAtm', config?.result?.isShowAtm ?? true);
             setPreviewLogo(config?.result?.logoUrl);
             setPreviewBanner(config?.result?.bannerUrl);
         }
@@ -218,6 +220,18 @@ function ConfigPage() {
                             {...field}
                             error={errors.footerUrl && errors.footerUrl.message}
                             className="support-field "
+                        />
+                    )}
+                />
+
+                <Controller
+                    name="isShowAtm"
+                    control={control}
+                    render={({ field: { value, onChange } }) => (
+                        <Switch
+                            label="Hiển thị màn Nạp ATM"
+                            checked={!!value}
+                            onChange={(event) => onChange(event.currentTarget.checked)}
                         />
                     )}
                 />
