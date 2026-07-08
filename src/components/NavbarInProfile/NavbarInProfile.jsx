@@ -1,3 +1,4 @@
+'use client';
 import { useFetchClientConfig } from '@/api/config';
 import UserButton from '@/lib/UserButton/UserButton';
 import { UnstyledButton } from '@mantine/core';
