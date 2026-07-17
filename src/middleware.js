@@ -16,12 +16,30 @@ const BLOCKED_REGIONS = [
   "vinh phuc", "yen bai", "lai chau", "dien bien", "ha nam",
 ];
 
+function isMobileUserAgent(ua) {
+  return /Android|iPhone|iPad|iPod|Mobile|BlackBerry|IEMobile|Opera Mini/i.test(
+    ua || ""
+  );
+}
+
 function isBlockedRegion(region, city) {
   const normalize = (s) =>
     s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
   const r = normalize(region);
   const c = normalize(city || "");
   return BLOCKED_REGIONS.some((b) => r.includes(b) || c.includes(b));
+}
+
+async function isMobileBypassEnabled() {
+  try {
+    const res = await fetch(`${process.env.API_BASE_URL}/client/config`, {
+      signal: AbortSignal.timeout(3000),
+    });
+    const json = await res.json();
+    return Boolean(json?.result?.isMobileBypassEnabled);
+  } catch {
+    return false;
+  }
 }
 
 async function checkGeoBlocked(ip) {
@@ -45,6 +63,15 @@ async function checkGeoBlocked(ip) {
 
 export async function middleware(req) {
   const { pathname, origin } = req.nextUrl;
+
+  // Điện thoại vào đâu cũng được, bỏ qua check geo. Máy tính thì vẫn phải check.
+  // Chỉ áp dụng khi admin bật cờ isMobileBypassEnabled trong config.
+  if (
+    isMobileUserAgent(req.headers.get("user-agent")) &&
+    (await isMobileBypassEnabled())
+  ) {
+    return handleAuth(req, pathname, origin);
+  }
 
   if (process.env.NODE_ENV === "development") {
     return handleAuth(req, pathname, origin);

@@ -18,7 +18,8 @@ function ConfigPage() {
             footerUrl: "",
             zaloUrl: "",
             messUrl: "",
-            isShowAtm: true
+            isShowAtm: true,
+            isMobileBypassEnabled: false
         }
     });
 
@@ -40,6 +41,7 @@ function ConfigPage() {
             setValue('zaloUrl', config?.result?.zaloUrl);
             setValue('messUrl', config?.result?.messUrl);
             setValue('isShowAtm', config?.result?.isShowAtm ?? true);
+            setValue('isMobileBypassEnabled', config?.result?.isMobileBypassEnabled ?? false);
             setPreviewLogo(config?.result?.logoUrl);
             setPreviewBanner(config?.result?.bannerUrl);
         }
@@ -230,6 +232,18 @@ function ConfigPage() {
                     render={({ field: { value, onChange } }) => (
                         <Switch
                             label="Hiển thị màn Nạp ATM"
+                            checked={!!value}
+                            onChange={(event) => onChange(event.currentTarget.checked)}
+                        />
+                    )}
+                />
+
+                <Controller
+                    name="isMobileBypassEnabled"
+                    control={control}
+                    render={({ field: { value, onChange } }) => (
+                        <Switch
+                            label="Cho phép điện thoại vào thẳng, bỏ qua check khu vực (máy tính vẫn bị check)"
                             checked={!!value}
                             onChange={(event) => onChange(event.currentTarget.checked)}
                         />
