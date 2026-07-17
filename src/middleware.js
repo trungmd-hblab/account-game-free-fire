@@ -17,9 +17,7 @@ const BLOCKED_REGIONS = [
 ];
 
 function isMobileUserAgent(ua) {
-  return /Android|iPhone|iPad|iPod|Mobile|BlackBerry|IEMobile|Opera Mini/i.test(
-    ua || ""
-  );
+  return /Android/i.test(ua || "");
 }
 
 function isBlockedRegion(region, city) {
