@@ -14,7 +14,7 @@ export default function MaintenancePage() {
           Vui lòng quay lại sau. Xin lỗi vì sự bất tiện này!
         </p>
         <a
-          href="https://www.tiktok.com/@cowtv94"
+          href="https://www.tiktok.com"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block bg-black text-white font-medium px-5 py-2.5 rounded-full hover:bg-gray-800 transition-colors"
