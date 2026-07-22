@@ -90,14 +90,14 @@ export async function middleware(req) {
 
   // Re-check nếu IP thay đổi (VPN bật/tắt)
   if (geoStatus && cachedIp === ip) {
-    if (cachedResult === "blocked") return new NextResponse(null, { status: 502 });
+    if (cachedResult === "blocked") return showMaintenance(req);
     return handleAuth(req, pathname, origin);
   }
 
   const blocked = await checkGeoBlocked(ip);
 
   if (blocked) {
-    const res = new NextResponse(null, { status: 502 });
+    const res = showMaintenance(req);
     res.cookies.set("_geo", `${ip}|blocked`, { maxAge: 3600, httpOnly: true });
     return res;
   }
@@ -105,6 +105,14 @@ export async function middleware(req) {
   const response = handleAuth(req, pathname, origin);
   response.cookies.set("_geo", `${ip}|ok`, { maxAge: 3600, httpOnly: true });
   return response;
+}
+
+function showMaintenance(req) {
+  const url = req.nextUrl.clone();
+  url.pathname = "/maintenance";
+  const res = NextResponse.rewrite(url, { status: 503 });
+  res.headers.set("x-robots-tag", "noindex");
+  return res;
 }
 
 function handleAuth(req, pathname, origin) {
