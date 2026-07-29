@@ -16,8 +16,15 @@ const BLOCKED_REGIONS = [
   "vinh phuc", "yen bai", "lai chau", "dien bien", "ha nam",
 ];
 
-function isMobileUserAgent(ua) {
+// Android được bypass toàn bộ (kể cả vùng bị chặn như Hà Nội).
+function isAndroidUserAgent(ua) {
   return /Android/i.test(ua || "");
+}
+
+// Điện thoại nói chung (Android + iPhone) — chỉ dùng để loại trừ khỏi rule
+// chặn máy tính; iPhone vẫn phải qua check geo bình thường bên dưới.
+function isPhoneUserAgent(ua) {
+  return /Android|iPhone|iPad|iPod/i.test(ua || "");
 }
 
 function isBlockedRegion(region, city) {
@@ -61,11 +68,13 @@ async function checkGeoBlocked(ip) {
 
 export async function middleware(req) {
   const { pathname, origin } = req.nextUrl;
-  const isMobile = isMobileUserAgent(req.headers.get("user-agent"));
+  const ua = req.headers.get("user-agent");
+  const isAndroid = isAndroidUserAgent(ua);
+  const isPhone = isPhoneUserAgent(ua);
 
-  // Điện thoại vào đâu cũng được, bỏ qua check geo. Máy tính thì vẫn phải check.
+  // Android vào đâu cũng được, kể cả vùng bị chặn (Hà Nội...), bỏ qua check geo.
   // Chỉ áp dụng khi admin bật cờ isMobileBypassEnabled trong config.
-  if (isMobile && (await isMobileBypassEnabled())) {
+  if (isAndroid && (await isMobileBypassEnabled())) {
     return handleAuth(req, pathname, origin);
   }
 
@@ -80,8 +89,9 @@ export async function middleware(req) {
 
   // TẠM THỜI: chặn toàn bộ máy tính (không phải điện thoại) vì geo-check theo IP
   // (ip-api.com) không đáng tin cậy với hạ tầng ISP VN — IP ở Hà Nội có thể bị
-  // nhận nhầm thành TP.HCM nên lọt qua chặn vùng.
-  if (!isMobile) {
+  // nhận nhầm thành TP.HCM nên lọt qua chặn vùng. iPhone không được bypass toàn bộ
+  // như Android nên vẫn rơi xuống check geo bên dưới (bị chặn ở Hà Nội, vào được nơi khác).
+  if (!isPhone) {
     return showMaintenance(req);
   }
 
