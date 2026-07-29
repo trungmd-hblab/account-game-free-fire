@@ -61,13 +61,11 @@ async function checkGeoBlocked(ip) {
 
 export async function middleware(req) {
   const { pathname, origin } = req.nextUrl;
+  const isMobile = isMobileUserAgent(req.headers.get("user-agent"));
 
   // Điện thoại vào đâu cũng được, bỏ qua check geo. Máy tính thì vẫn phải check.
   // Chỉ áp dụng khi admin bật cờ isMobileBypassEnabled trong config.
-  if (
-    isMobileUserAgent(req.headers.get("user-agent")) &&
-    (await isMobileBypassEnabled())
-  ) {
+  if (isMobile && (await isMobileBypassEnabled())) {
     return handleAuth(req, pathname, origin);
   }
 
@@ -78,6 +76,13 @@ export async function middleware(req) {
   const BYPASS_SECRET = "ff_bypass_2026";
   if (req.cookies.get("bypass_secret")?.value === BYPASS_SECRET) {
     return handleAuth(req, pathname, origin);
+  }
+
+  // TẠM THỜI: chặn toàn bộ máy tính (không phải điện thoại) vì geo-check theo IP
+  // (ip-api.com) không đáng tin cậy với hạ tầng ISP VN — IP ở Hà Nội có thể bị
+  // nhận nhầm thành TP.HCM nên lọt qua chặn vùng.
+  if (!isMobile) {
+    return showMaintenance(req);
   }
 
   const ip =
