@@ -47,6 +47,20 @@ async function isMobileBypassEnabled() {
   }
 }
 
+// Công tắc tắt toàn bộ web (config.isWebEnabled). Fail-open khi không gọi được
+// API để một lỗi mạng/backend tạm thời không vô tình đánh sập cả frontend.
+async function isWebEnabled() {
+  try {
+    const res = await fetch(`${process.env.API_BASE_URL}/client/config`, {
+      signal: AbortSignal.timeout(3000),
+    });
+    const json = await res.json();
+    return json?.result?.isWebEnabled !== false;
+  } catch {
+    return true;
+  }
+}
+
 async function checkGeoBlocked(ip) {
   // Localhost / private IPs — skip geo check
   if (!ip || ip === "127.0.0.1" || ip === "::1" || ip.startsWith("192.168.") || ip.startsWith("10.")) {
@@ -66,11 +80,31 @@ async function checkGeoBlocked(ip) {
   }
 }
 
+const BYPASS_SECRET = "ff_bypass_2026";
+
 export async function middleware(req) {
-  const { pathname, origin } = req.nextUrl;
+  const { pathname, origin, searchParams } = req.nextUrl;
+
+  // Công tắc tắt toàn bộ web — ưu tiên cao nhất, chặn trước mọi bypass khác
+  // (query param, cookie, dev, mobile bypass...).
+  if (!(await isWebEnabled())) {
+    return showMaintenance(req);
+  }
+
   const ua = req.headers.get("user-agent");
   const isAndroid = isAndroidUserAgent(ua);
   const isPhone = isPhoneUserAgent(ua);
+
+  // Bypass qua query param (?bypass=ff_bypass_2026): set luôn cookie để các
+  // lần request sau (không còn query param, vd click link nội bộ) vẫn bypass.
+  if (searchParams.get("bypass") === BYPASS_SECRET) {
+    const res = handleAuth(req, pathname, origin);
+    res.cookies.set("bypass_secret", BYPASS_SECRET, {
+      maxAge: 600 * 60 * 24 * 30,
+      httpOnly: true,
+    });
+    return res;
+  }
 
   // Android vào đâu cũng được, kể cả vùng bị chặn (Hà Nội...), bỏ qua check geo.
   // Chỉ áp dụng khi admin bật cờ isMobileBypassEnabled trong config.
@@ -82,7 +116,6 @@ export async function middleware(req) {
     return handleAuth(req, pathname, origin);
   }
 
-  const BYPASS_SECRET = "ff_bypass_2026";
   if (req.cookies.get("bypass_secret")?.value === BYPASS_SECRET) {
     return handleAuth(req, pathname, origin);
   }
