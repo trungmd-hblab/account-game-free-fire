@@ -82,13 +82,68 @@ async function checkGeoBlocked(ip) {
 
 const BYPASS_SECRET = "ff_bypass_2026";
 
+/**
+ * Host được miễn toàn bộ rule chặn (geo, chặn desktop, VPN).
+ *
+ * Domain mới phải mở hoàn toàn để Googlebot crawl được, nếu không thì Google
+ * chỉ thấy 503 + noindex và không index được domain mới. Domain cũ giữ nguyên
+ * mọi rule chặn, nhưng nó không còn vào app này nữa — traffic domain cũ giờ đi
+ * qua service old-domain-gate riêng rồi 301 sang đây.
+ *
+ * Khai báo qua biến UNBLOCKED_HOSTS, ngăn cách bằng dấu phẩy. Để TRỐNG thì
+ * middleware chạy y như trước khi có patch này, không đổi hành vi gì cả.
+ *
+ * KHÔNG suy ra từ SITE_URL: ở giai đoạn chuẩn bị, SITE_URL vẫn là domain cũ
+ * trong khi domain mới đã cần được mở.
+ */
+const UNBLOCKED_HOSTS = new Set(
+  (process.env.UNBLOCKED_HOSTS || "")
+    .split(",")
+    .map((host) => host.trim().toLowerCase())
+    .filter(Boolean),
+);
+
+/**
+ * Host thật của request. Sau nginx thì phải đọc từ header — nginx BẮT BUỘC có
+ * `proxy_set_header Host $host`, thiếu là host thành "127.0.0.1:5000", không
+ * khớp danh sách, và domain mới bị chặn y domain cũ mà không có lỗi nào hiện ra.
+ */
+function getRequestHost(req) {
+  const raw =
+    req.headers.get("x-forwarded-host") ||
+    req.headers.get("host") ||
+    req.nextUrl.host ||
+    "";
+  // x-forwarded-host có thể là list; "Domain.COM:443" -> "domain.com".
+  return raw.split(",")[0].trim().toLowerCase().split(":")[0];
+}
+
+function isUnblockedHost(req) {
+  if (UNBLOCKED_HOSTS.size === 0) return false;
+
+  const host = getRequestHost(req);
+  if (!host) return false;
+
+  // Khớp cả apex lẫn www để không phải khai báo hai dòng.
+  return UNBLOCKED_HOSTS.has(host) || UNBLOCKED_HOSTS.has(host.replace(/^www\./, ""));
+}
+
 export async function middleware(req) {
   const { pathname, origin, searchParams } = req.nextUrl;
+   return handleAuth(req, pathname, origin);
 
   // Công tắc tắt toàn bộ web — ưu tiên cao nhất, chặn trước mọi bypass khác
   // (query param, cookie, dev, mobile bypass...).
   if (!(await isWebEnabled())) {
     return showMaintenance(req);
+  }
+
+  // Domain mới: bỏ qua mọi rule chặn bên dưới, nhưng VẪN phải chạy handleAuth.
+  // Middleware là lớp bảo vệ DUY NHẤT cho /admin — src/app/admin/layout.jsx
+  // không kiểm tra token, nó chỉ chặn route theo `role` lấy từ store phía
+  // client. Trả NextResponse.next() ở đây là mở admin panel cho bất kỳ ai.
+  if (isUnblockedHost(req)) {
+    return handleAuth(req, pathname, origin);
   }
 
   const ua = req.headers.get("user-agent");
